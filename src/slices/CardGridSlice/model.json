@@ -1,0 +1,47 @@
+{
+  "id": "card_grid_slice",
+  "type": "SharedSlice",
+  "name": "CardGridSlice",
+  "description": "Grid of cards with title, description and image",
+  "variations": [
+    {
+      "id": "default",
+      "name": "Default",
+      "docURL": "...",
+      "version": "initial",
+      "description": "Default",
+      "imageUrl": "",
+      "primary": {
+        "heading": {
+          "type": "Text",
+          "config": { "label": "Heading", "placeholder": "Grid heading" }
+        },
+        "intro": {
+          "type": "StructuredText",
+          "config": { "label": "Intro", "placeholder": "Intro copy", "multi": "paragraph,strong,em,hyperlink" }
+        },
+        "cards": {
+          "type": "Group",
+          "config": {
+            "label": "Cards",
+            "fields": {
+              "title": {
+                "type": "Text",
+                "config": { "label": "Title", "placeholder": "Card title" }
+              },
+              "description": {
+                "type": "Text",
+                "config": { "label": "Description", "placeholder": "Card description" }
+              },
+              "image": {
+                "type": "Image",
+                "config": { "label": "Image", "constraint": {}, "thumbnails": [] }
+              }
+            }
+          }
+        }
+      },
+      "items": {}
+    }
+  ]
+}

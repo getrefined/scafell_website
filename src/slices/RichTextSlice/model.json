@@ -1,0 +1,23 @@
+{
+  "id": "rich_text_slice",
+  "type": "SharedSlice",
+  "name": "RichTextSlice",
+  "description": "Free-form rich text section",
+  "variations": [
+    {
+      "id": "default",
+      "name": "Default",
+      "docURL": "...",
+      "version": "initial",
+      "description": "Default",
+      "imageUrl": "",
+      "primary": {
+        "body": {
+          "type": "StructuredText",
+          "config": { "label": "Body", "placeholder": "Body copy", "multi": "paragraph,strong,em,hyperlink" }
+        }
+      },
+      "items": {}
+    }
+  ]
+}

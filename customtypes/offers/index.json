@@ -1,0 +1,37 @@
+{
+  "id": "offers",
+  "label": "Offers",
+  "repeatable": false,
+  "status": true,
+  "format": "page",
+  "json": {
+    "Main": {
+      "slices": {
+        "type": "Slices",
+        "fieldset": "Slice Zone",
+        "config": {
+          "choices": {
+            "hero_slice": {
+              "type": "SharedSlice"
+            },
+            "feature_slice": {
+              "type": "SharedSlice"
+            },
+            "rich_text_slice": {
+              "type": "SharedSlice"
+            },
+            "list_slice": {
+              "type": "SharedSlice"
+            },
+            "card_grid_slice": {
+              "type": "SharedSlice"
+            },
+            "cta_banner_slice": {
+              "type": "SharedSlice"
+            }
+          }
+        }
+      }
+    }
+  }
+}

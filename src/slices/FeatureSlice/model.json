@@ -1,0 +1,47 @@
+{
+  "id": "feature_slice",
+  "type": "SharedSlice",
+  "name": "FeatureSlice",
+  "description": "Image and text feature section with optional CTA",
+  "variations": [
+    {
+      "id": "default",
+      "name": "Default",
+      "docURL": "...",
+      "version": "initial",
+      "description": "Default",
+      "imageUrl": "",
+      "primary": {
+        "eyebrow": {
+          "type": "Text",
+          "config": { "label": "Eyebrow", "placeholder": "Small label above heading" }
+        },
+        "heading": {
+          "type": "StructuredText",
+          "config": { "label": "Heading", "placeholder": "Section heading", "single": "heading2,em" }
+        },
+        "body": {
+          "type": "StructuredText",
+          "config": { "label": "Body", "placeholder": "Body copy", "multi": "paragraph,strong,em,hyperlink" }
+        },
+        "cta_label": {
+          "type": "Text",
+          "config": { "label": "CTA Label", "placeholder": "Discover more" }
+        },
+        "cta_link": {
+          "type": "Text",
+          "config": { "label": "CTA Link", "placeholder": "/rooms/" }
+        },
+        "layout": {
+          "type": "Select",
+          "config": { "label": "Layout", "options": ["normal", "flipped"], "default_value": "normal" }
+        },
+        "image": {
+          "type": "Image",
+          "config": { "label": "Image", "constraint": {}, "thumbnails": [] }
+        }
+      },
+      "items": {}
+    }
+  ]
+}

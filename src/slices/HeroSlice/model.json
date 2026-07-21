@@ -1,0 +1,31 @@
+{
+  "id": "hero_slice",
+  "type": "SharedSlice",
+  "name": "HeroSlice",
+  "description": "Full-width page hero with heading, subheading and CTA",
+  "variations": [
+    {
+      "id": "default",
+      "name": "Default",
+      "docURL": "...",
+      "version": "initial",
+      "description": "Default",
+      "imageUrl": "",
+      "primary": {
+        "heading": {
+          "type": "Text",
+          "config": { "label": "Heading", "placeholder": "Page heading" }
+        },
+        "subheading": {
+          "type": "Text",
+          "config": { "label": "Subheading", "placeholder": "Supporting line" }
+        },
+        "cta_label": {
+          "type": "Text",
+          "config": { "label": "CTA Label", "placeholder": "Book your stay today" }
+        }
+      },
+      "items": {}
+    }
+  ]
+}

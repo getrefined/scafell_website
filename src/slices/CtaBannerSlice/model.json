@@ -1,0 +1,31 @@
+{
+  "id": "cta_banner_slice",
+  "type": "SharedSlice",
+  "name": "CtaBannerSlice",
+  "description": "Full-width call-to-action banner",
+  "variations": [
+    {
+      "id": "default",
+      "name": "Default",
+      "docURL": "...",
+      "version": "initial",
+      "description": "Default",
+      "imageUrl": "",
+      "primary": {
+        "heading": {
+          "type": "Text",
+          "config": { "label": "Heading", "placeholder": "Banner heading" }
+        },
+        "button_label": {
+          "type": "Text",
+          "config": { "label": "Button Label", "placeholder": "Book Now" }
+        },
+        "button_link": {
+          "type": "Text",
+          "config": { "label": "Button Link", "placeholder": "/contact/" }
+        }
+      },
+      "items": {}
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "id": "list_slice",
+  "type": "SharedSlice",
+  "name": "ListSlice",
+  "description": "Heading with a repeatable list of items",
+  "variations": [
+    {
+      "id": "default",
+      "name": "Default",
+      "docURL": "...",
+      "version": "initial",
+      "description": "Default",
+      "imageUrl": "",
+      "primary": {
+        "heading": {
+          "type": "Text",
+          "config": { "label": "Heading", "placeholder": "List heading" }
+        },
+        "items": {
+          "type": "Group",
+          "config": {
+            "label": "Items",
+            "fields": {
+              "item": {
+                "type": "Text",
+                "config": { "label": "Item", "placeholder": "List item" }
+              }
+            }
+          }
+        }
+      },
+      "items": {}
+    }
+  ]
+}
