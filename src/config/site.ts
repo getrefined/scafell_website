@@ -9,7 +9,7 @@ export const site = {
 
   // ── Placeholders: set these when known ──────────────────────────
   bookingUrl: '', // external booking engine URL; '' → BOOK NOW links to the Contact page
-  formEndpoint: '', // Cloudflare Worker /contact URL — set after worker deploy
+  formEndpoint: 'https://scafell-prismic-webhook.digital-f33.workers.dev/contact',
   menusUrl: '', // link/PDF for VIEW MENUS; '' → hide the button
   facebookUrl: '', // '' → hide link
   instagramUrl: '', // '' → hide link

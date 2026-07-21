@@ -5,15 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ac3a6b3f-99a7-4903-a60c-9596a4d28fbe" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/scafell-claude.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/index.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tsconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/tsconfig.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/cloudflare-worker.js" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/cloudflare-worker.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/setup-mailgun.mjs" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/setup-mailgun.mjs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -91,7 +85,7 @@
       <updated>1762941897952</updated>
       <workItem from="1762941900933" duration="677000" />
       <workItem from="1763031910238" duration="528000" />
-      <workItem from="1784633506514" duration="4370000" />
+      <workItem from="1784633506514" duration="6950000" />
     </task>
     <servers>
       <JIRA shared="true" url="https://goj-platform-development.atlassian.net">

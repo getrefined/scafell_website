@@ -108,6 +108,11 @@ async function handleContactForm(request, env) {
     return corsResponse(env, 400, "Name and email are required");
   }
 
+  // Reject header-injection characters and oversized names
+  if (!/^[^\r\n<>"]{1,100}$/.test(name)) {
+    return corsResponse(env, 400, "Invalid name");
+  }
+
   // Basic email format check
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     return corsResponse(env, 400, "Invalid email address");
@@ -133,7 +138,7 @@ async function handleContactForm(request, env) {
   // Use https://api.mailgun.net for US region
 
   const form = new URLSearchParams();
-  form.append("from", `${name} <noreply@${env.MAILGUN_DOMAIN}>`);
+  form.append("from", `Website Enquiry <noreply@${env.MAILGUN_DOMAIN}>`);
   form.append("to", env.RECIPIENT_EMAIL);
   form.append("reply-to", email);
   form.append("subject", `Website Enquiry from ${name}`);

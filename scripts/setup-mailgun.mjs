@@ -16,6 +16,7 @@
  */
 
 import fs from 'node:fs';
+import { randomBytes } from 'node:crypto';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -41,7 +42,7 @@ async function createMailgunDomain() {
 
   const form = new URLSearchParams();
   form.append('name', MAILGUN_DOMAIN);
-  form.append('smtp_password', 'mg-' + Math.random().toString(36).slice(2, 14));
+  form.append('smtp_password', 'mg-' + randomBytes(24).toString('base64url'));
   form.append('web_scheme', 'https');
 
   const res = await fetch(`${MAILGUN_API}/domains`, {
