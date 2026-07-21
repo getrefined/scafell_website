@@ -1,0 +1,22 @@
+---
+import { bookingHref } from '../config/site';
+
+interface Props {
+  heading: string;
+  buttonLabel?: string;
+  buttonHref?: string;
+}
+
+const {
+  heading,
+  buttonLabel = 'Book your stay today',
+  buttonHref = bookingHref,
+} = Astro.props;
+---
+
+<section class="band section">
+  <div class="container reveal">
+    <h2>{heading}</h2>
+    <a class="btn btn--ghost" href={buttonHref}>{buttonLabel}</a>
+  </div>
+</section>

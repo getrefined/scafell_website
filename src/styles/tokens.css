@@ -1,0 +1,28 @@
+:root {
+  /* Brand palette */
+  --c-lake: #2d3540;
+  --c-mountain: #54728c;
+  --c-sky: #bdd9f2;
+  --c-fell: #8a8c46;
+  --c-gorse: #7c506e;
+  --c-offwhite: #faf8f5;
+  --c-white: #ffffff;
+  --c-scrim: rgba(20, 26, 32, 0.45);
+
+  /* Type */
+  --font-display: 'Prata', 'Georgia', serif;
+  --font-body: 'Manrope', system-ui, sans-serif;
+
+  /* Scale */
+  --space-xs: 0.5rem;
+  --space-s: 1rem;
+  --space-m: 2rem;
+  --space-l: 4rem;
+  --space-xl: 7rem;
+  --container: 72rem;
+  --radius: 4px;
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur: 0.7s;
+}

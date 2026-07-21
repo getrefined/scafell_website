@@ -1,0 +1,42 @@
+---
+import * as prismic from '@prismicio/client';
+
+interface Props {
+  slice?: any;
+  body?: string; // html
+  centered?: boolean;
+}
+
+const { slice, body, centered = false } = Astro.props;
+const p = slice?.primary;
+
+const bodyHtml =
+  p?.body && (prismic.asText(p.body) ?? '').trim() ? prismic.asHTML(p.body) : (body ?? '');
+---
+
+<section class="section container">
+  <div class:list={['prose', 'reveal', { 'prose--centered': centered }]} set:html={bodyHtml} />
+</section>
+
+<style>
+  .prose {
+    max-width: 46rem;
+  }
+
+  .prose--centered {
+    margin-inline: auto;
+    text-align: center;
+  }
+
+  .prose :global(p) {
+    margin: 0 0 var(--space-s);
+  }
+
+  .prose :global(p:last-child) {
+    margin-bottom: 0;
+  }
+
+  .prose :global(em) {
+    font-style: italic;
+  }
+</style>

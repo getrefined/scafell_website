@@ -1,0 +1,159 @@
+@import './tokens.css';
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  font-weight: 300;
+  line-height: 1.7;
+  color: var(--c-lake);
+  background: var(--c-offwhite);
+  -webkit-font-smoothing: antialiased;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  line-height: 1.15;
+  margin: 0 0 var(--space-s);
+}
+
+h1 { font-size: clamp(2.2rem, 5vw, 3.8rem); }
+h2 { font-size: clamp(1.7rem, 3.5vw, 2.6rem); }
+h3 { font-size: clamp(1.2rem, 2vw, 1.5rem); }
+
+p { margin: 0 0 var(--space-s); }
+
+a { color: var(--c-mountain); }
+
+ul { padding-left: 1.2em; }
+
+.container {
+  max-width: var(--container);
+  margin-inline: auto;
+  padding-inline: clamp(1rem, 4vw, 2rem);
+}
+
+.section { padding-block: clamp(var(--space-l), 9vw, var(--space-xl)); }
+
+.eyebrow {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--c-fell);
+  margin-bottom: var(--space-s);
+}
+
+/* Buttons */
+.btn {
+  display: inline-block;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.85rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--c-white);
+  background: var(--c-mountain);
+  border: 1px solid var(--c-mountain);
+  border-radius: var(--radius);
+  padding: 0.9em 2em;
+  cursor: pointer;
+  transition: background 0.25s var(--ease-out), color 0.25s var(--ease-out);
+}
+
+.btn:hover { background: var(--c-lake); border-color: var(--c-lake); }
+
+.btn--ghost {
+  background: transparent;
+  color: var(--c-white);
+  border-color: var(--c-white);
+}
+
+.btn--ghost:hover { background: var(--c-white); color: var(--c-lake); }
+
+/* Grids */
+.grid { display: grid; gap: var(--space-m); }
+.grid--2 { grid-template-columns: repeat(auto-fit, minmax(min(20rem, 100%), 1fr)); }
+.grid--3 { grid-template-columns: repeat(auto-fit, minmax(min(16rem, 100%), 1fr)); }
+
+/* Alternating image/text feature rows */
+.feature {
+  display: grid;
+  gap: clamp(var(--space-m), 5vw, var(--space-l));
+  align-items: center;
+}
+
+@media (min-width: 50rem) {
+  .feature { grid-template-columns: 1fr 1fr; }
+  .feature--flip > :first-child { order: 2; }
+}
+
+.feature img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: var(--radius);
+}
+
+/* Full-width colour bands */
+.band {
+  background: var(--c-lake);
+  color: var(--c-white);
+  text-align: center;
+}
+
+.band--green { background: var(--c-fell); }
+
+.band a:not(.btn) { color: var(--c-sky); }
+
+/* Scroll reveal — BaseLayout's IntersectionObserver adds .visible */
+.reveal {
+  opacity: 0;
+  transform: translateY(1.5rem);
+  transition: opacity var(--dur) var(--ease-out), transform var(--dur) var(--ease-out);
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: none;
+}
+
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+.reveal-delay-4 { transition-delay: 0.4s; }
+.reveal-delay-5 { transition-delay: 0.5s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

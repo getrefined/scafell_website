@@ -1,0 +1,58 @@
+---
+import Base from '../layouts/Base.astro';
+import Hero from '../components/Hero.astro';
+import FeatureSection from '../components/FeatureSection.astro';
+import { site } from '../config/site';
+import { getPageSlices, sliceOf } from '../lib/prismicio';
+import heroRestaurant from '../assets/images/hero-restaurant.jpg';
+import diningDetail from '../assets/images/dining-detail.jpg';
+
+const slices = await getPageSlices('restaurant');
+const heroSlice = sliceOf(slices, 'hero_slice');
+const featureSlice = sliceOf(slices, 'feature_slice');
+
+const diningHtml =
+  '<p>Dining at The Scafell Hotel is an experience to savour. Our restaurant celebrates the finest local ingredients, carefully crafted into seasonal dishes inspired by the surrounding landscape.</p><p>Start your day with a hearty Lake District breakfast before heading out to explore, then return in the evening to enjoy expertly prepared cuisine alongside a carefully selected range of wines, local ales and spirits.</p>';
+---
+
+<Base
+  title="Restaurant | The Scafell Hotel"
+  description="Our restaurant celebrates the finest local ingredients, carefully crafted into seasonal dishes inspired by the surrounding landscape. Fresh. Seasonal. Local."
+>
+  <Hero
+    image={heroRestaurant}
+    alt="The restaurant at The Scafell Hotel"
+    title={heroSlice?.primary?.heading || 'A Taste of the Lake District'}
+    short
+  />
+
+  <main>
+    <FeatureSection
+      slice={featureSlice}
+      eyebrow="Dining"
+      body={diningHtml}
+      image={diningDetail}
+      imageAlt="Seasonal dishes at The Scafell Hotel"
+    />
+
+    <section class="band band--green section">
+      <div class="container reveal">
+        <h2>Fresh. Seasonal. Local.</h2>
+        <p>
+          From relaxed lunches to memorable evening meals, our restaurant offers warm
+          hospitality and exceptional flavours in a welcoming setting.
+        </p>
+        {site.menusUrl && <a class="btn btn--ghost" href={site.menusUrl}>View Menus</a>}
+      </div>
+    </section>
+
+    <section class="section container" style="text-align: center;">
+      <div class="reveal">
+        <h2>Reserve your table during your stay</h2>
+        <p>
+          Call us on <a href={site.phoneHref}>{site.phone}</a> to book.
+        </p>
+      </div>
+    </section>
+  </main>
+</Base>

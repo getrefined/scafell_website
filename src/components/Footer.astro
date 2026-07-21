@@ -1,0 +1,80 @@
+---
+import { site, bookingHref, withBase } from '../config/site';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="container site-footer__grid">
+    <div>
+      <img src={withBase('/logo-white.svg')} alt={site.name} width="160" height="64" />
+      <p class="site-footer__address">
+        {site.address.line1}<br />
+        {site.address.line2}<br />
+        {site.address.village}, {site.address.town}<br />
+        {site.address.postcode}, {site.address.country}
+      </p>
+    </div>
+    <nav aria-label="Footer">
+      <ul>
+        <li><a href={withBase('/')}>Homepage</a></li>
+        <li><a href={withBase('/rooms/')}>Rooms</a></li>
+        <li><a href={withBase('/restaurant/')}>Restaurant</a></li>
+        <li><a href={withBase('/private-events/')}>Private Events</a></li>
+        <li><a href={withBase('/offers/')}>Offers</a></li>
+        <li><a href={withBase('/explore/')}>Explore</a></li>
+        <li><a href={withBase('/gallery/')}>Gallery</a></li>
+        <li><a href={withBase('/contact/')}>Contact</a></li>
+      </ul>
+    </nav>
+    <div>
+      <p>
+        <a href={site.phoneHref}>{site.phone}</a><br />
+        <a href={`mailto:${site.email}`}>{site.email}</a>
+      </p>
+      {site.facebookUrl && <p><a href={site.facebookUrl}>Facebook</a></p>}
+      {site.instagramUrl && <p><a href={site.instagramUrl}>Instagram</a></p>}
+      <a class="btn btn--ghost" href={bookingHref}>Book Now</a>
+    </div>
+  </div>
+  <p class="site-footer__legal container">
+    &copy; {year} {site.name}, {site.tagline}
+  </p>
+</footer>
+
+<style>
+  .site-footer {
+    background: var(--c-lake);
+    color: var(--c-white);
+    padding-block: var(--space-l) var(--space-m);
+    margin-top: auto;
+  }
+
+  .site-footer a { color: var(--c-sky); text-decoration: none; }
+  .site-footer a:hover { text-decoration: underline; }
+
+  .site-footer__grid {
+    display: grid;
+    gap: var(--space-m);
+    grid-template-columns: repeat(auto-fit, minmax(min(14rem, 100%), 1fr));
+  }
+
+  .site-footer__grid img { width: 140px; height: auto; }
+
+  .site-footer__address { font-size: 0.9rem; opacity: 0.85; }
+
+  .site-footer nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+  }
+
+  .site-footer__legal {
+    margin-top: var(--space-l);
+    font-size: 0.8rem;
+    opacity: 0.6;
+  }
+</style>

@@ -1,0 +1,162 @@
+---
+import type { ImageMetadata } from 'astro';
+import { Image } from 'astro:assets';
+import * as prismic from '@prismicio/client';
+
+interface Card {
+  title: string;
+  description: string;
+  image?: ImageMetadata;
+  alt?: string;
+}
+
+interface Props {
+  slice?: any;
+  heading?: string;
+  intro?: string; // html
+  cards?: Card[];
+  columns?: 2 | 3;
+  accent?: 'gorse' | 'fell';
+}
+
+const { slice, heading, intro, cards = [], columns = 3, accent = 'fell' } = Astro.props;
+const p = slice?.primary;
+
+/** Plain text from a Prismic Text or StructuredText field. */
+const text = (f: any): string =>
+  typeof f === 'string' ? f : f ? (prismic.asText(f) ?? '') : '';
+
+const finalHeading = (p ? text(p.heading).trim() : '') || heading;
+
+const introHtml =
+  p?.intro && text(p.intro).trim()
+    ? typeof p.intro === 'string'
+      ? `<p>${p.intro}</p>`
+      : prismic.asHTML(p.intro)
+    : (intro ?? '');
+
+interface ResolvedCard {
+  title: string;
+  description: string;
+  prismicImage?: { url: string; alt?: string; dimensions?: { width: number; height: number } };
+  localImage?: ImageMetadata;
+  alt: string;
+}
+
+/*
+ * Slice cards win when present. A Prismic card image (plain URL) overrides the
+ * local fallback image for the card with the matching title; cards with no
+ * image at all render text-only with the accent top border.
+ */
+const resolvedCards: ResolvedCard[] = p?.cards?.length
+  ? p.cards.map((c: any): ResolvedCard => {
+      const title = text(c.title).trim();
+      const description = text(c.description).trim();
+      const prismicImage = c.image?.url ? c.image : undefined;
+      const fallback = cards.find((f) => f.title === title);
+      return {
+        title,
+        description,
+        prismicImage,
+        localImage: prismicImage ? undefined : fallback?.image,
+        alt: prismicImage?.alt || fallback?.alt || title,
+      };
+    })
+  : cards.map(
+      (c): ResolvedCard => ({
+        title: c.title,
+        description: c.description,
+        localImage: c.image,
+        alt: c.alt ?? c.title,
+      })
+    );
+---
+
+<section class="section container">
+  {finalHeading && <h2 class="reveal">{finalHeading}</h2>}
+  {introHtml && <div class="card-grid__intro reveal" set:html={introHtml} />}
+  <div class={`grid grid--${columns}`}>
+    {
+      resolvedCards.map((card, i) => (
+        <article
+          class:list={[
+            'card',
+            `card--${accent}`,
+            { 'card--text': !card.prismicImage && !card.localImage },
+            'reveal',
+            `reveal-delay-${(i % columns) + 1}`,
+          ]}
+        >
+          {card.prismicImage ? (
+            <img
+              src={card.prismicImage.url}
+              alt={card.prismicImage.alt ?? card.alt}
+              width={card.prismicImage.dimensions?.width}
+              height={card.prismicImage.dimensions?.height}
+              loading="lazy"
+            />
+          ) : card.localImage ? (
+            <Image
+              src={card.localImage}
+              alt={card.alt}
+              widths={[400, 800]}
+              sizes={`(min-width: 50rem) ${columns === 2 ? '50vw' : '33vw'}, 100vw`}
+            />
+          ) : null}
+          <div class="card__body">
+            <h3>{card.title}</h3>
+            <p>{card.description}</p>
+          </div>
+        </article>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .card-grid__intro {
+    max-width: 46rem;
+  }
+
+  .card-grid__intro :global(p) {
+    margin: 0 0 var(--space-s);
+  }
+
+  .card {
+    background: var(--c-white);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(45, 53, 64, 0.08);
+  }
+
+  .card--gorse {
+    --accent: var(--c-gorse);
+  }
+
+  .card--fell {
+    --accent: var(--c-fell);
+  }
+
+  .card--text {
+    border-top: 3px solid var(--accent);
+  }
+
+  .card img {
+    aspect-ratio: 3 / 2;
+    object-fit: cover;
+    width: 100%;
+  }
+
+  .card__body {
+    padding: var(--space-m);
+  }
+
+  .card h3 {
+    font-size: 1.15rem;
+    color: var(--accent);
+  }
+
+  .card p {
+    margin: 0;
+  }
+</style>

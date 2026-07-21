@@ -1,0 +1,89 @@
+---
+import Base from '../layouts/Base.astro';
+import Hero from '../components/Hero.astro';
+import FeatureSection from '../components/FeatureSection.astro';
+import RichTextSection from '../components/RichTextSection.astro';
+import CtaBanner from '../components/CtaBanner.astro';
+import { bookingHref } from '../config/site';
+import { getPageSlices, sliceOf, slicesOf } from '../lib/prismicio';
+import heroHome from '../assets/images/hero-home.jpg';
+import featureRooms from '../assets/images/feature-rooms.jpg';
+import featureDining from '../assets/images/feature-dining.jpg';
+import featureExplore from '../assets/images/feature-explore.jpg';
+
+const slices = await getPageSlices('homepage');
+const heroSlice = sliceOf(slices, 'hero_slice');
+const featureSlices = slicesOf(slices, 'feature_slice');
+const introSlice = sliceOf(slices, 'rich_text_slice');
+const ctaSlice = sliceOf(slices, 'cta_banner_slice');
+
+const fallbackFeatures = [
+  {
+    eyebrow: 'Rooms',
+    heading: 'Rest & Recharge',
+    body: "<p>After a day spent discovering the lakes, fells and hidden corners of the National Park, there's nothing quite like returning to a comfortable room where you can truly unwind. Thoughtfully designed and full of character, our accommodation offers the perfect balance of comfort, tranquillity and authentic Lake District charm.</p>",
+    cta: 'Discover Our Rooms →',
+    href: '/rooms/',
+    image: featureRooms,
+    alt: 'A characterful bedroom at The Scafell Hotel',
+  },
+  {
+    eyebrow: 'Restaurant',
+    heading: 'Dining Worth Staying For',
+    body: '<p>Great food has always been at the heart of the guest experience at The Scafell Hotel. From leisurely breakfasts before a day of adventure to relaxed evenings spent enjoying good company, every meal is an opportunity to savour the flavours of the region in a welcoming and atmospheric setting.</p>',
+    cta: 'Explore Dining →',
+    href: '/restaurant/',
+    image: featureDining,
+    alt: 'Dining at The Scafell Hotel',
+  },
+  {
+    eyebrow: 'Explore',
+    heading: 'Adventure on Your Doorstep',
+    body: "<p>Few locations offer such immediate access to the natural beauty of the Lake District. Step outside and you'll find inspiring walking routes, stunning viewpoints, picturesque villages and unforgettable landscapes waiting to be explored. Whether you're seeking adventure or relaxation, the perfect day out begins here.</p>",
+    cta: 'Explore the Lake District →',
+    href: '/explore/',
+    image: featureExplore,
+    alt: 'Fells and valleys of the Lake District',
+  },
+];
+
+const introHtml =
+  "<p>With 23 beautifully appointed bedrooms, a welcoming bar and restaurant, cosy spaces to unwind and some of England's most spectacular landscapes on the doorstep, The Scafell Hotel is the perfect base for exploring the Lakes.</p><p>Whether you're seeking a romantic getaway, an active walking holiday, a family break or a special celebration, you'll discover warm hospitality, locally inspired dining and breathtaking scenery at every turn.</p><p>Experience the beauty of the Lake District from one of its most charming hotels.</p>";
+---
+
+<Base
+  title="The Scafell Hotel | Lake District Hotel in Borrowdale, Keswick"
+  description="Nestled in the heart of the Lake District, The Scafell Hotel offers a timeless countryside escape with 23 beautifully appointed bedrooms, a welcoming bar and restaurant."
+>
+  <Hero
+    image={heroHome}
+    alt="The Lake District landscape surrounding The Scafell Hotel"
+    title={heroSlice?.primary?.heading || 'Welcome to The Scafell Hotel'}
+    subtitle={heroSlice?.primary?.subheading ||
+      'Nestled in the heart of the Lake District, The Scafell Hotel offers a timeless countryside escape where comfort, adventure and exceptional hospitality come together.'}
+  >
+    <a class="btn" href={bookingHref}>{heroSlice?.primary?.cta_label || 'Book your stay today'}</a>
+  </Hero>
+
+  <main>
+    <RichTextSection slice={introSlice} body={introHtml} centered />
+
+    {
+      fallbackFeatures.map((f, i) => (
+        <FeatureSection
+          slice={featureSlices[i]}
+          eyebrow={f.eyebrow}
+          heading={f.heading}
+          body={f.body}
+          ctaLabel={f.cta}
+          ctaHref={f.href}
+          image={f.image}
+          imageAlt={f.alt}
+          flip={i % 2 === 1}
+        />
+      ))
+    }
+
+    <CtaBanner heading={ctaSlice?.primary?.heading || 'Experience the beauty of the Lake District'} />
+  </main>
+</Base>

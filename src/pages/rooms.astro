@@ -1,0 +1,59 @@
+---
+import Base from '../layouts/Base.astro';
+import Hero from '../components/Hero.astro';
+import RichTextSection from '../components/RichTextSection.astro';
+import ListSection from '../components/ListSection.astro';
+import CardGrid from '../components/CardGrid.astro';
+import CtaBanner from '../components/CtaBanner.astro';
+import { rooms } from '../content/rooms';
+import { getPageSlices, sliceOf } from '../lib/prismicio';
+import heroRooms from '../assets/images/hero-rooms.jpg';
+
+const slices = await getPageSlices('rooms');
+const heroSlice = sliceOf(slices, 'hero_slice');
+const introSlice = sliceOf(slices, 'rich_text_slice');
+const listSlice = sliceOf(slices, 'list_slice');
+const cardsSlice = sliceOf(slices, 'card_grid_slice');
+const ctaSlice = sliceOf(slices, 'cta_banner_slice');
+
+const introHtml =
+  "<p>Our 23 individually designed bedrooms combine classic comfort with modern conveniences, creating the perfect sanctuary after a day spent exploring the fells, lakes and valleys of the Lake District.</p><p>Choose from cosy doubles, spacious superior rooms and family-friendly accommodation, each thoughtfully furnished to ensure a restful stay. Many rooms offer stunning views of the surrounding countryside, allowing you to wake up immersed in the natural beauty of the Lakes.</p>";
+
+const features = [
+  'Comfortable beds with quality linens',
+  'En-suite bathrooms',
+  'Complimentary Wi-Fi',
+  'Tea and coffee-making facilities',
+  'Flat-screen televisions',
+  'Beautiful countryside views in selected rooms',
+];
+
+const roomCards = rooms.map((r) => ({
+  title: r.name,
+  description: r.description,
+  image: r.image,
+  alt: r.alt,
+}));
+---
+
+<Base
+  title="Rooms | The Scafell Hotel"
+  description="Our 23 individually designed bedrooms combine classic comfort with modern conveniences — cosy doubles, spacious superior rooms and family-friendly accommodation."
+>
+  <Hero
+    image={heroRooms}
+    alt="Countryside views from The Scafell Hotel"
+    title={heroSlice?.primary?.heading || 'Relax in Comfort'}
+    short
+  />
+
+  <main>
+    <RichTextSection slice={introSlice} body={introHtml} />
+    <ListSection slice={listSlice} heading="Room Features" items={features} />
+    <RichTextSection
+      body="<p>Whether you're visiting for a weekend escape or an extended holiday, you'll find everything you need for a memorable stay.</p>"
+    />
+    <CardGrid slice={cardsSlice} cards={roomCards} columns={2} accent="gorse" />
+    <CtaBanner heading={ctaSlice?.primary?.heading || 'Find your perfect sanctuary'} />
+  </main>
+</Base>

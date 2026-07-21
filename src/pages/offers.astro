@@ -1,0 +1,79 @@
+---
+import Base from '../layouts/Base.astro';
+import Hero from '../components/Hero.astro';
+import RichTextSection from '../components/RichTextSection.astro';
+import OfferGrid from '../components/OfferGrid.astro';
+import CtaBanner from '../components/CtaBanner.astro';
+import { offers as fallbackOffers } from '../content/offers';
+import { client, getPageSlices, sliceOf, slicesOf } from '../lib/prismicio';
+import heroOffers from '../assets/images/hero-offers.jpg';
+
+const slices = await getPageSlices('offers');
+const heroSlice = sliceOf(slices, 'hero_slice');
+const richSlices = slicesOf(slices, 'rich_text_slice');
+const ctaSlice = sliceOf(slices, 'cta_banner_slice');
+
+// Live offers from the Prismic repeatable type; fallback to hardcoded list.
+let offers = fallbackOffers;
+try {
+  const docs = await client.getAllByType('offer' as any);
+  if (docs.length > 0) {
+    offers = docs.map((d) => ({
+      name: (d.data as any).name ?? '',
+      description: (d.data as any).description ?? '',
+    }));
+  }
+} catch {
+  /* Prismic unreachable — fallback stands */
+}
+
+const introHtml =
+  "<p>Make your Lake District escape even more memorable with our latest special offers and seasonal packages. Whether you're planning a spontaneous weekend away, a walking holiday in the fells or a longer countryside retreat, our carefully curated offers provide the perfect opportunity to experience The Scafell Hotel for less.</p><p>From accommodation packages and dining experiences to seasonal breaks and exclusive savings, there's always a reason to return to the Lakes.</p>";
+---
+
+<Base
+  title="Offers | The Scafell Hotel"
+  description="Make your Lake District escape even more memorable with our latest special offers and seasonal packages at The Scafell Hotel."
+>
+  <Hero
+    image={heroOffers}
+    alt="The Lake District scenery around The Scafell Hotel"
+    title={heroSlice?.primary?.heading || 'Exclusive Offers at The Scafell Hotel'}
+    short
+  />
+
+  <main>
+    <RichTextSection slice={richSlices[0]} body={introHtml} />
+
+    <section class="section container">
+      <h2 class="reveal">Current Offers</h2>
+      <p class="reveal">
+        Our latest promotions are updated regularly throughout the year. Check back often to
+        discover:
+      </p>
+      <OfferGrid offers={offers} />
+    </section>
+
+    <section class="band section">
+      <div class="container reveal">
+        <h2>Why Book Direct?</h2>
+        <p style="max-width: 44rem; margin-inline: auto;">
+          When you book directly with The Scafell Hotel, you'll enjoy access to our best
+          available rates, exclusive offers and the confidence of booking with our team.
+        </p>
+      </div>
+    </section>
+
+    <section class="section container" style="text-align: center;">
+      <div class="reveal">
+        <h2>Plan Your Next Escape</h2>
+        <p style="max-width: 44rem; margin-inline: auto;">
+          Surrounded by some of the Lake District's most spectacular scenery, there's never
+          been a better time to discover everything The Scafell Hotel has to offer.
+        </p>
+      </div>
+    </section>
+
+    <CtaBanner heading={ctaSlice?.primary?.heading || 'Book your stay today'} />
+  </main>
+</Base>

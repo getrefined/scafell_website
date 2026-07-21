@@ -1,0 +1,156 @@
+---
+import type { ImageMetadata } from 'astro';
+import { Image } from 'astro:assets';
+
+interface Props {
+  photos: { image: ImageMetadata; alt: string }[];
+}
+
+const { photos } = Astro.props;
+---
+
+<div class="gallery-grid">
+  {
+    photos.map((photo, i) => (
+      <button class="gallery-grid__item reveal" type="button" data-index={i}>
+        <Image
+          src={photo.image}
+          alt={photo.alt}
+          widths={[400, 800]}
+          sizes="(min-width: 50rem) 33vw, 50vw"
+        />
+      </button>
+    ))
+  }
+</div>
+
+<dialog class="lightbox">
+  <button class="lightbox__close" type="button" aria-label="Close">&times;</button>
+  <button class="lightbox__prev" type="button" aria-label="Previous image">&#8249;</button>
+  <img class="lightbox__img" src="" alt="" />
+  <button class="lightbox__next" type="button" aria-label="Next image">&#8250;</button>
+</dialog>
+
+<style>
+  .gallery-grid {
+    margin-top: var(--space-m);
+    columns: 3;
+    gap: var(--space-s);
+  }
+
+  @media (max-width: 50rem) {
+    .gallery-grid {
+      columns: 2;
+    }
+  }
+
+  .gallery-grid__item {
+    display: block;
+    width: 100%;
+    margin-bottom: var(--space-s);
+    padding: 0;
+    border: 0;
+    background: none;
+    cursor: zoom-in;
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+
+  .gallery-grid__item img {
+    width: 100%;
+    transition: transform 0.5s var(--ease-out);
+  }
+
+  .gallery-grid__item:hover img {
+    transform: scale(1.04);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .gallery-grid__item img {
+      transition: none;
+    }
+  }
+
+  .lightbox {
+    border: 0;
+    padding: 0;
+    background: transparent;
+    max-width: 90vw;
+    max-height: 90vh;
+  }
+
+  .lightbox::backdrop {
+    background: rgba(20, 26, 32, 0.9);
+  }
+
+  .lightbox__img {
+    max-width: 90vw;
+    max-height: 85vh;
+    object-fit: contain;
+    border-radius: var(--radius);
+  }
+
+  .lightbox button {
+    position: fixed;
+    background: none;
+    border: 0;
+    color: var(--c-white);
+    font-size: 2.5rem;
+    line-height: 1;
+    cursor: pointer;
+    padding: 0.5rem 1rem;
+  }
+
+  .lightbox__close {
+    top: 1rem;
+    right: 1rem;
+  }
+
+  .lightbox__prev {
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .lightbox__next {
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+</style>
+
+<script>
+  const dialog = document.querySelector<HTMLDialogElement>('.lightbox');
+  const img = document.querySelector<HTMLImageElement>('.lightbox__img');
+  const items = [...document.querySelectorAll<HTMLButtonElement>('.gallery-grid__item')];
+  let index = 0;
+
+  const show = (i: number) => {
+    index = (i + items.length) % items.length;
+    const thumb = items[index]?.querySelector('img');
+    if (thumb && img) {
+      img.src = thumb.currentSrc || thumb.src;
+      img.alt = thumb.alt;
+    }
+  };
+
+  items.forEach((item, i) =>
+    item.addEventListener('click', () => {
+      show(i);
+      dialog?.showModal();
+    })
+  );
+
+  document.querySelector('.lightbox__close')?.addEventListener('click', () => dialog?.close());
+  document.querySelector('.lightbox__prev')?.addEventListener('click', () => show(index - 1));
+  document.querySelector('.lightbox__next')?.addEventListener('click', () => show(index + 1));
+
+  dialog?.addEventListener('click', (e) => {
+    if (e.target === dialog) dialog.close();
+  });
+
+  dialog?.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowLeft') show(index - 1);
+    if (e.key === 'ArrowRight') show(index + 1);
+  });
+</script>

@@ -9,3 +9,12 @@ yarn-error.log*
 .pnp.js
 
 .vscode/*
+
+# Build output
+/dist
+/.astro
+
+# Secrets — never commit
+docs/project-config.json
+
+.DS_Store

@@ -1,0 +1,53 @@
+---
+import Base from '../layouts/Base.astro';
+import Hero from '../components/Hero.astro';
+import RichTextSection from '../components/RichTextSection.astro';
+import CardGrid from '../components/CardGrid.astro';
+import CtaBanner from '../components/CtaBanner.astro';
+import { highlights } from '../content/explore';
+import { getPageSlices, sliceOf } from '../lib/prismicio';
+import heroExplore from '../assets/images/hero-explore.jpg';
+
+const slices = await getPageSlices('explore');
+const heroSlice = sliceOf(slices, 'hero_slice');
+const introSlice = sliceOf(slices, 'rich_text_slice');
+const cardsSlice = sliceOf(slices, 'card_grid_slice');
+const ctaSlice = sliceOf(slices, 'cta_banner_slice');
+
+const introHtml =
+  "<p>The Scafell Hotel sits at the gateway to some of the Lake District's most iconic landscapes and outdoor adventures.</p><p>From gentle lakeside walks to challenging mountain hikes, there is something for every visitor to enjoy.</p>";
+
+const highlightCards = highlights.map((h) => ({
+  title: h.name,
+  description: h.description,
+  image: h.image,
+  alt: h.alt,
+}));
+---
+
+<Base
+  title="Explore the Lake District | The Scafell Hotel"
+  description="The Scafell Hotel sits at the gateway to some of the Lake District's most iconic landscapes — Scafell Pike, Borrowdale Valley, Derwentwater, Keswick and more."
+>
+  <Hero
+    image={heroExplore}
+    alt="Iconic Lake District landscapes"
+    title={heroSlice?.primary?.heading || 'Discover the Lake District'}
+    short
+  />
+
+  <main>
+    <RichTextSection slice={introSlice} body={introHtml} />
+    <CardGrid
+      slice={cardsSlice}
+      heading="Nearby Highlights"
+      cards={highlightCards}
+      columns={3}
+      accent="fell"
+    />
+    <RichTextSection
+      body="<p>Explore charming villages, cruise across tranquil waters, discover local history or simply take in the spectacular scenery that has inspired generations of visitors.</p><p>Your Lake District adventure starts here.</p>"
+    />
+    <CtaBanner heading={ctaSlice?.primary?.heading || 'Your Lake District adventure starts here'} />
+  </main>
+</Base>

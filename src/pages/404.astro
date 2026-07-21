@@ -1,0 +1,16 @@
+---
+import Base from '../layouts/Base.astro';
+import { withBase } from '../config/site';
+---
+
+<Base
+  title="Page Not Found | The Scafell Hotel"
+  description="The page you were looking for could not be found."
+  transparentHeader={false}
+>
+  <main class="section container" style="text-align: center; padding-top: 10rem;">
+    <h1>Page Not Found</h1>
+    <p>The path you've taken doesn't lead anywhere — but the Lakes are still waiting.</p>
+    <a class="btn" href={withBase('/')}>Back to the Homepage</a>
+  </main>
+</Base>

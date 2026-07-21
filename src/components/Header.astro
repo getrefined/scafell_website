@@ -1,0 +1,166 @@
+---
+import { site, bookingHref, withBase } from '../config/site';
+
+interface Props {
+  transparent?: boolean;
+}
+
+const { transparent = true } = Astro.props;
+
+const links = [
+  { href: withBase('/'), label: 'Home' },
+  { href: withBase('/rooms/'), label: 'Rooms' },
+  { href: withBase('/restaurant/'), label: 'Restaurant' },
+  { href: withBase('/private-events/'), label: 'Private Events' },
+  { href: withBase('/offers/'), label: 'Offers' },
+  { href: withBase('/explore/'), label: 'Explore' },
+  { href: withBase('/gallery/'), label: 'Gallery' },
+  { href: withBase('/contact/'), label: 'Contact' },
+];
+
+/* Astro.url.pathname includes the base prefix, matching withBase() output. */
+const current = Astro.url.pathname;
+---
+
+<header class:list={['site-header', { 'site-header--solid': !transparent }]}>
+  <div class="site-header__inner container">
+    <a class="site-header__brand" href={withBase('/')} aria-label={site.name}>
+      <img src={withBase('/logo-white.svg')} alt="" width="150" height="60" />
+    </a>
+    <nav class="site-header__nav" id="site-nav" aria-label="Main">
+      <ul>
+        {
+          links.map((l) => (
+            <li>
+              <a href={l.href} aria-current={current === l.href ? 'page' : undefined}>
+                {l.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+    <a class="btn site-header__book" href={bookingHref}>Book Now</a>
+    <button
+      class="site-header__toggle"
+      type="button"
+      aria-expanded="false"
+      aria-controls="site-nav"
+    >
+      <span class="visually-hidden">Menu</span>
+      <span class="site-header__bar"></span>
+      <span class="site-header__bar"></span>
+      <span class="site-header__bar"></span>
+    </button>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    position: fixed;
+    inset: 0 0 auto;
+    z-index: 100;
+    padding-block: 0.75rem;
+    background: transparent;
+    transition: background 0.35s var(--ease-out), padding 0.35s var(--ease-out);
+  }
+
+  .site-header--solid,
+  .site-header.is-scrolled,
+  .site-header.is-open {
+    background: var(--c-lake);
+  }
+
+  .site-header__inner {
+    display: flex;
+    align-items: center;
+    gap: var(--space-m);
+  }
+
+  .site-header__brand img { width: 110px; height: auto; }
+
+  .site-header__nav { margin-left: auto; }
+
+  .site-header__nav ul {
+    display: flex;
+    gap: 1.4rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .site-header__nav a {
+    color: var(--c-white);
+    text-decoration: none;
+    font-size: 0.82rem;
+    font-weight: 400;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.25s var(--ease-out);
+  }
+
+  .site-header__nav a:hover,
+  .site-header__nav a[aria-current='page'] {
+    border-color: var(--c-sky);
+  }
+
+  .site-header__toggle { display: none; }
+
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+  }
+
+  @media (max-width: 64rem) {
+    .site-header__nav {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: var(--c-lake);
+      padding: var(--space-m);
+    }
+
+    .site-header.is-open .site-header__nav { display: block; }
+
+    .site-header__nav ul { flex-direction: column; gap: 1rem; }
+
+    .site-header__book { margin-left: auto; padding: 0.7em 1.3em; }
+
+    .site-header__toggle {
+      display: grid;
+      gap: 5px;
+      background: none;
+      border: 0;
+      padding: 0.5rem;
+      cursor: pointer;
+    }
+
+    .site-header__bar {
+      width: 24px;
+      height: 2px;
+      background: var(--c-white);
+    }
+  }
+</style>
+
+<script>
+  const header = document.querySelector('.site-header');
+  const toggle = document.querySelector('.site-header__toggle');
+
+  if (header) {
+    const onScroll = () => header.classList.toggle('is-scrolled', window.scrollY > 40);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+  }
+
+  toggle?.addEventListener('click', () => {
+    const open = header?.classList.toggle('is-open') ?? false;
+    toggle.setAttribute('aria-expanded', String(open));
+  });
+</script>

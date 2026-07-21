@@ -1,0 +1,50 @@
+---
+import Base from '../layouts/Base.astro';
+import Hero from '../components/Hero.astro';
+import RichTextSection from '../components/RichTextSection.astro';
+import ListSection from '../components/ListSection.astro';
+import CtaBanner from '../components/CtaBanner.astro';
+import { withBase } from '../config/site';
+import { getPageSlices, sliceOf } from '../lib/prismicio';
+import heroEvents from '../assets/images/hero-events.jpg';
+
+const slices = await getPageSlices('private_events');
+const heroSlice = sliceOf(slices, 'hero_slice');
+const introSlice = sliceOf(slices, 'rich_text_slice');
+const listSlice = sliceOf(slices, 'list_slice');
+const ctaSlice = sliceOf(slices, 'cta_banner_slice');
+
+const introHtml =
+  "<p>From intimate family gatherings to milestone celebrations and corporate retreats, The Scafell Hotel provides a beautiful setting for memorable events.</p><p>Our experienced team will work closely with you to create a bespoke experience, whether you're planning a birthday celebration, anniversary, private dining event, business meeting or special occasion.</p>";
+
+const reasons = [
+  'Stunning Lake District location',
+  'Flexible event spaces',
+  'Bespoke catering options',
+  'Comfortable accommodation for guests',
+  'Dedicated event support',
+];
+---
+
+<Base
+  title="Private Events | The Scafell Hotel"
+  description="From intimate family gatherings to milestone celebrations and corporate retreats, The Scafell Hotel provides a beautiful setting for memorable events."
+>
+  <Hero
+    image={heroEvents}
+    alt="An event setting at The Scafell Hotel"
+    title={heroSlice?.primary?.heading || 'Celebrate in the Heart of the Lakes'}
+    short
+  />
+
+  <main>
+    <RichTextSection slice={introSlice} body={introHtml} />
+    <ListSection slice={listSlice} heading="Why Choose The Scafell Hotel?" items={reasons} />
+    <RichTextSection body="<p>Let us help bring your event to life.</p>" />
+    <CtaBanner
+      heading={ctaSlice?.primary?.heading || 'Contact our team to discuss your requirements'}
+      buttonLabel="Get in touch"
+      buttonHref={withBase('/contact/')}
+    />
+  </main>
+</Base>

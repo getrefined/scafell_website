@@ -1,0 +1,127 @@
+---
+import { site } from '../config/site';
+---
+
+<form
+  class="enquiry"
+  method="POST"
+  novalidate
+  data-endpoint={site.formEndpoint}
+  data-phone={site.phone}
+  data-phone-href={site.phoneHref}
+  data-email={site.email}
+>
+  <p class="enquiry__hp" aria-hidden="true">
+    <label>
+      Leave this field empty
+      <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" />
+    </label>
+  </p>
+  <label>
+    Name
+    <input type="text" name="name" required autocomplete="name" />
+  </label>
+  <label>
+    Email Address
+    <input type="email" name="email" required autocomplete="email" />
+  </label>
+  <label>
+    Enquiry
+    <textarea name="message" rows="6" required></textarea>
+  </label>
+  <button class="btn" type="submit">Send</button>
+  <p class="enquiry__status" role="status" aria-live="polite"></p>
+</form>
+
+<style>
+  .enquiry {
+    display: grid;
+    gap: var(--space-s);
+  }
+
+  .enquiry__hp {
+    position: absolute;
+    left: -9999px;
+  }
+
+  .enquiry label {
+    display: grid;
+    gap: 0.4rem;
+    font-weight: 700;
+    font-size: 0.85rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .enquiry input,
+  .enquiry textarea {
+    font: inherit;
+    font-weight: 300;
+    padding: 0.8em;
+    border: 1px solid var(--c-mountain);
+    border-radius: var(--radius);
+    background: var(--c-white);
+    color: var(--c-lake);
+  }
+
+  .enquiry input:focus-visible,
+  .enquiry textarea:focus-visible {
+    outline: 2px solid var(--c-fell);
+    outline-offset: 1px;
+  }
+
+  .enquiry .btn {
+    justify-self: start;
+  }
+
+  .enquiry__status:not(:empty) {
+    padding: var(--space-s);
+    border-radius: var(--radius);
+    background: var(--c-sky);
+    margin: 0;
+  }
+</style>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>('.enquiry');
+  const status = form?.querySelector<HTMLElement>('.enquiry__status');
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (!status) return;
+
+    const gotcha = form.elements.namedItem('_gotcha') as HTMLInputElement | null;
+    if (gotcha?.value) return; // spam bot filled the honeypot — drop silently
+
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      return;
+    }
+
+    const { endpoint, phone, phoneHref, email } = form.dataset;
+
+    const showFailure = () => {
+      status.innerHTML = `Sorry, something went wrong sending your enquiry. Please call us on <a href="${phoneHref}">${phone}</a> or email <a href="mailto:${email}">${email}</a> and we'll be happy to help.`;
+    };
+
+    if (!endpoint) {
+      console.warn('Enquiry form not yet connected: set site.formEndpoint in src/config/site.ts');
+      showFailure();
+      return;
+    }
+
+    status.textContent = 'Sending…';
+    try {
+      const res = await fetch(endpoint, {
+        method: 'POST',
+        headers: { Accept: 'application/json' },
+        body: new FormData(form),
+      });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      status.textContent = "Thank you — we'll get back to you as soon as possible.";
+      form.reset();
+    } catch {
+      showFailure();
+    }
+  });
+</script>

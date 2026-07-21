@@ -1,0 +1,37 @@
+---
+interface Props {
+  offers: { name: string; description: string }[];
+}
+
+const { offers } = Astro.props;
+---
+
+<div class="grid grid--3">
+  {
+    offers.map((offer, i) => (
+      <article class={`offer-card reveal reveal-delay-${(i % 3) + 1}`}>
+        <h3>{offer.name}</h3>
+        <p>{offer.description}</p>
+      </article>
+    ))
+  }
+</div>
+
+<style>
+  .offer-card {
+    background: var(--c-white);
+    border-top: 3px solid var(--c-fell);
+    border-radius: var(--radius);
+    padding: var(--space-m);
+    box-shadow: 0 10px 30px rgba(45, 53, 64, 0.08);
+  }
+
+  .offer-card h3 {
+    font-size: 1.15rem;
+    color: var(--c-mountain);
+  }
+
+  .offer-card p {
+    margin: 0;
+  }
+</style>

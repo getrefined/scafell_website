@@ -1,0 +1,49 @@
+---
+import * as prismic from '@prismicio/client';
+
+interface Props {
+  slice?: any;
+  heading?: string;
+  items?: string[];
+}
+
+const { slice, heading, items = [] } = Astro.props;
+const p = slice?.primary;
+
+/** Plain text from a Prismic Text or StructuredText field. */
+const text = (f: any): string =>
+  typeof f === 'string' ? f : f ? (prismic.asText(f) ?? '') : '';
+
+const finalHeading = (p ? text(p.heading).trim() : '') || heading;
+
+const sliceItems: string[] =
+  p?.items?.map((i: any) => text(i.item).trim()).filter(Boolean) ?? [];
+const finalItems = sliceItems.length ? sliceItems : items;
+---
+
+<section class="section container">
+  {finalHeading && <h2 class="reveal">{finalHeading}</h2>}
+  <ul class="feature-list reveal reveal-delay-1">
+    {finalItems.map((item) => <li>{item}</li>)}
+  </ul>
+</section>
+
+<style>
+  .feature-list {
+    columns: 2;
+    column-gap: var(--space-m);
+    max-width: 46rem;
+    margin: 0;
+  }
+
+  @media (max-width: 40rem) {
+    .feature-list {
+      columns: 1;
+    }
+  }
+
+  .feature-list li {
+    break-inside: avoid;
+    margin-bottom: 0.35em;
+  }
+</style>

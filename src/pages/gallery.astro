@@ -1,0 +1,61 @@
+---
+import Base from '../layouts/Base.astro';
+import Hero from '../components/Hero.astro';
+import RichTextSection from '../components/RichTextSection.astro';
+import GalleryGrid from '../components/GalleryGrid.astro';
+import { getPageSlices, sliceOf } from '../lib/prismicio';
+import heroGallery from '../assets/images/hero-gallery.jpg';
+import img1 from '../assets/images/hero-home.jpg';
+import img2 from '../assets/images/feature-rooms.jpg';
+import img3 from '../assets/images/feature-dining.jpg';
+import img4 from '../assets/images/feature-explore.jpg';
+import img5 from '../assets/images/room-family.jpg';
+import img6 from '../assets/images/room-double.jpg';
+import img7 from '../assets/images/hero-explore.jpg';
+import img8 from '../assets/images/dining-detail.jpg';
+import img9 from '../assets/images/hero-rooms.jpg';
+import img10 from '../assets/images/hero-contact.jpg';
+import img11 from '../assets/images/hero-offers.jpg';
+import img12 from '../assets/images/hero-events.jpg';
+
+const slices = await getPageSlices('gallery');
+const heroSlice = sliceOf(slices, 'hero_slice');
+const introSlice = sliceOf(slices, 'rich_text_slice');
+
+const introHtml =
+  '<p>Browse our gallery and experience the charm of The Scafell Hotel before you arrive.</p><p>Explore our comfortable bedrooms, inviting restaurant, beautiful surroundings and unforgettable Lake District views.</p><p>Every image tells part of the story of your next escape.</p>';
+
+const photos = [
+  { image: img1, alt: 'The Lake District landscape' },
+  { image: img2, alt: 'A characterful bedroom' },
+  { image: img3, alt: 'Dining at the hotel' },
+  { image: img4, alt: 'Fells and valleys' },
+  { image: img5, alt: 'A spacious family room' },
+  { image: img6, alt: 'A cosy double room' },
+  { image: img7, alt: 'Mountain scenery' },
+  { image: img8, alt: 'Seasonal dishes' },
+  { image: img9, alt: 'Countryside views' },
+  { image: img10, alt: 'The Borrowdale valley' },
+  { image: img11, alt: 'Lake District scenery' },
+  { image: img12, alt: 'An event setting' },
+];
+---
+
+<Base
+  title="Gallery | The Scafell Hotel"
+  description="Browse our gallery and experience the charm of The Scafell Hotel before you arrive — comfortable bedrooms, inviting restaurant and unforgettable Lake District views."
+>
+  <Hero
+    image={heroGallery}
+    alt="Views of The Scafell Hotel and its surroundings"
+    title={heroSlice?.primary?.heading || 'Discover The Scafell Hotel'}
+    short
+  />
+
+  <main>
+    <RichTextSection slice={introSlice} body={introHtml} />
+    <section class="section container">
+      <GalleryGrid photos={photos} />
+    </section>
+  </main>
+</Base>
