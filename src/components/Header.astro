@@ -62,7 +62,9 @@ const current = Astro.url.pathname;
     z-index: 100;
     padding-block: 0.75rem;
     background: transparent;
-    transition: background 0.35s var(--ease-out), padding 0.35s var(--ease-out);
+    transition:
+      background 0.35s var(--ease-out),
+      padding 0.35s var(--ease-out);
   }
 
   .site-header--solid,
@@ -77,9 +79,14 @@ const current = Astro.url.pathname;
     gap: var(--space-m);
   }
 
-  .site-header__brand img { width: 110px; height: auto; }
+  .site-header__brand img {
+    width: 110px;
+    height: auto;
+  }
 
-  .site-header__nav { margin-left: auto; }
+  .site-header__nav {
+    margin-left: auto;
+  }
 
   .site-header__nav ul {
     display: flex;
@@ -105,7 +112,9 @@ const current = Astro.url.pathname;
     border-color: var(--c-sky);
   }
 
-  .site-header__toggle { display: none; }
+  .site-header__toggle {
+    display: none;
+  }
 
   .visually-hidden {
     position: absolute;
@@ -126,11 +135,19 @@ const current = Astro.url.pathname;
       padding: var(--space-m);
     }
 
-    .site-header.is-open .site-header__nav { display: block; }
+    .site-header.is-open .site-header__nav {
+      display: block;
+    }
 
-    .site-header__nav ul { flex-direction: column; gap: 1rem; }
+    .site-header__nav ul {
+      flex-direction: column;
+      gap: 1rem;
+    }
 
-    .site-header__book { margin-left: auto; padding: 0.7em 1.3em; }
+    .site-header__book {
+      margin-left: auto;
+      padding: 0.7em 1.3em;
+    }
 
     .site-header__toggle {
       display: grid;

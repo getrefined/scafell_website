@@ -32,13 +32,26 @@ const year = new Date().getFullYear();
         <a href={site.phoneHref}>{site.phone}</a><br />
         <a href={`mailto:${site.email}`}>{site.email}</a>
       </p>
-      {site.facebookUrl && <p><a href={site.facebookUrl}>Facebook</a></p>}
-      {site.instagramUrl && <p><a href={site.instagramUrl}>Instagram</a></p>}
+      {
+        site.facebookUrl && (
+          <p>
+            <a href={site.facebookUrl}>Facebook</a>
+          </p>
+        )
+      }
+      {
+        site.instagramUrl && (
+          <p>
+            <a href={site.instagramUrl}>Instagram</a>
+          </p>
+        )
+      }
       <a class="btn btn--ghost" href={bookingHref}>Book Now</a>
     </div>
   </div>
   <p class="site-footer__legal container">
-    &copy; {year} {site.name}, {site.tagline}
+    &copy; {year}
+    {site.name}, {site.tagline}
   </p>
 </footer>
 
@@ -50,8 +63,13 @@ const year = new Date().getFullYear();
     margin-top: auto;
   }
 
-  .site-footer a { color: var(--c-sky); text-decoration: none; }
-  .site-footer a:hover { text-decoration: underline; }
+  .site-footer a {
+    color: var(--c-sky);
+    text-decoration: none;
+  }
+  .site-footer a:hover {
+    text-decoration: underline;
+  }
 
   .site-footer__grid {
     display: grid;
@@ -59,9 +77,15 @@ const year = new Date().getFullYear();
     grid-template-columns: repeat(auto-fit, minmax(min(14rem, 100%), 1fr));
   }
 
-  .site-footer__grid img { width: 140px; height: auto; }
+  .site-footer__grid img {
+    width: 140px;
+    height: auto;
+  }
 
-  .site-footer__address { font-size: 0.9rem; opacity: 0.85; }
+  .site-footer__address {
+    font-size: 0.9rem;
+    opacity: 0.85;
+  }
 
   .site-footer nav ul {
     list-style: none;

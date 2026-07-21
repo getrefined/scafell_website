@@ -49,11 +49,11 @@ const documents = [
         hero(
           'Welcome to The Scafell Hotel',
           'Nestled in the heart of the Lake District, The Scafell Hotel offers a timeless countryside escape where comfort, adventure and exceptional hospitality come together.',
-          'Book your stay today'
+          'Book your stay today',
         ),
         richText(
           "With 23 beautifully appointed bedrooms, a welcoming bar and restaurant, cosy spaces to unwind and some of England's most spectacular landscapes on the doorstep, The Scafell Hotel is the perfect base for exploring the Lakes.",
-          "Whether you're seeking a romantic getaway, an active walking holiday, a family break or a special celebration, you'll discover warm hospitality, locally inspired dining and breathtaking scenery at every turn."
+          "Whether you're seeking a romantic getaway, an active walking holiday, a family break or a special celebration, you'll discover warm hospitality, locally inspired dining and breathtaking scenery at every turn.",
         ),
         feature(
           'Rooms',
@@ -63,7 +63,7 @@ const documents = [
           ],
           'Discover Our Rooms',
           '/rooms/',
-          'normal'
+          'normal',
         ),
         feature(
           'Restaurant',
@@ -73,7 +73,7 @@ const documents = [
           ],
           'Explore Dining',
           '/restaurant/',
-          'flipped'
+          'flipped',
         ),
         feature(
           'Explore',
@@ -83,12 +83,12 @@ const documents = [
           ],
           'Explore the Lake District',
           '/explore/',
-          'normal'
+          'normal',
         ),
         ctaBanner(
           'Experience the beauty of the Lake District from one of its most charming hotels.',
           'Book your stay today',
-          '/contact/'
+          '/contact/',
         ),
       ],
     },
@@ -102,7 +102,7 @@ const documents = [
         hero('Relax in Comfort', '', 'Book your stay today'),
         richText(
           'Our 23 individually designed bedrooms combine classic comfort with modern conveniences, creating the perfect sanctuary after a day spent exploring the fells, lakes and valleys of the Lake District.',
-          'Choose from cosy doubles, spacious superior rooms and family-friendly accommodation, each thoughtfully furnished to ensure a restful stay. Many rooms offer stunning views of the surrounding countryside, allowing you to wake up immersed in the natural beauty of the Lakes.'
+          'Choose from cosy doubles, spacious superior rooms and family-friendly accommodation, each thoughtfully furnished to ensure a restful stay. Many rooms offer stunning views of the surrounding countryside, allowing you to wake up immersed in the natural beauty of the Lakes.',
         ),
         slice('list_slice', {
           heading: 'Room Features',
@@ -118,13 +118,29 @@ const documents = [
         slice('card_grid_slice', {
           heading: 'Our Rooms',
           intro: rt(
-            "Whether you're visiting for a weekend escape or an extended holiday, you'll find everything you need for a memorable stay."
+            "Whether you're visiting for a weekend escape or an extended holiday, you'll find everything you need for a memorable stay.",
           ),
           cards: [
-            { title: 'Family', description: 'Spacious rooms with space for the whole family to relax.', image: {} },
-            { title: 'Double', description: 'Cosy double rooms perfect for a countryside escape for two.', image: {} },
-            { title: 'Twin', description: 'Comfortable twin rooms ideal for friends or walking companions.', image: {} },
-            { title: 'Single', description: 'Restful single rooms for solo travellers exploring the Lakes.', image: {} },
+            {
+              title: 'Family',
+              description: 'Spacious rooms with space for the whole family to relax.',
+              image: {},
+            },
+            {
+              title: 'Double',
+              description: 'Cosy double rooms perfect for a countryside escape for two.',
+              image: {},
+            },
+            {
+              title: 'Twin',
+              description: 'Comfortable twin rooms ideal for friends or walking companions.',
+              image: {},
+            },
+            {
+              title: 'Single',
+              description: 'Restful single rooms for solo travellers exploring the Lakes.',
+              image: {},
+            },
           ],
         }),
         ctaBanner('Relax in comfort at The Scafell Hotel.', 'Book your stay today', '/contact/'),
@@ -147,11 +163,11 @@ const documents = [
           ],
           '',
           '',
-          'normal'
+          'normal',
         ),
         richText(
           'Fresh. Seasonal. Local.',
-          'From relaxed lunches to memorable evening meals, our restaurant offers warm hospitality and exceptional flavours in a welcoming setting.'
+          'From relaxed lunches to memorable evening meals, our restaurant offers warm hospitality and exceptional flavours in a welcoming setting.',
         ),
         ctaBanner('Reserve your table during your stay', 'Book Now', '/contact/'),
       ],
@@ -166,7 +182,7 @@ const documents = [
         hero('Celebrate in the Heart of the Lakes'),
         richText(
           'From intimate family gatherings to milestone celebrations and corporate retreats, The Scafell Hotel provides a beautiful setting for memorable events.',
-          "Our experienced team will work closely with you to create a bespoke experience, whether you're planning a birthday celebration, anniversary, private dining event, business meeting or special occasion."
+          "Our experienced team will work closely with you to create a bespoke experience, whether you're planning a birthday celebration, anniversary, private dining event, business meeting or special occasion.",
         ),
         slice('list_slice', {
           heading: 'Why Choose The Scafell Hotel?',
@@ -181,7 +197,7 @@ const documents = [
         ctaBanner(
           'Let us help bring your event to life.',
           'Contact our team to discuss your requirements',
-          '/contact/'
+          '/contact/',
         ),
       ],
     },
@@ -195,16 +211,16 @@ const documents = [
         hero('Exclusive Offers at The Scafell Hotel'),
         richText(
           "Make your Lake District escape even more memorable with our latest special offers and seasonal packages. Whether you're planning a spontaneous weekend away, a walking holiday in the fells or a longer countryside retreat, our carefully curated offers provide the perfect opportunity to experience The Scafell Hotel for less.",
-          "From accommodation packages and dining experiences to seasonal breaks and exclusive savings, there's always a reason to return to the Lakes."
+          "From accommodation packages and dining experiences to seasonal breaks and exclusive savings, there's always a reason to return to the Lakes.",
         ),
         richText(
           'Why Book Direct?',
-          "When you book directly with The Scafell Hotel, you'll enjoy access to our best available rates, exclusive offers and the confidence of booking with our team."
+          "When you book directly with The Scafell Hotel, you'll enjoy access to our best available rates, exclusive offers and the confidence of booking with our team.",
         ),
         ctaBanner(
           "Surrounded by some of the Lake District's most spectacular scenery, there's never been a better time to discover everything The Scafell Hotel has to offer.",
           'Book your stay today',
-          '/contact/'
+          '/contact/',
         ),
       ],
     },
@@ -218,20 +234,45 @@ const documents = [
         hero('Discover the Lake District'),
         richText(
           "The Scafell Hotel sits at the gateway to some of the Lake District's most iconic landscapes and outdoor adventures.",
-          'From gentle lakeside walks to challenging mountain hikes, there is something for every visitor to enjoy.'
+          'From gentle lakeside walks to challenging mountain hikes, there is something for every visitor to enjoy.',
         ),
         slice('card_grid_slice', {
           heading: 'Nearby Highlights',
           intro: rt(
-            'Explore charming villages, cruise across tranquil waters, discover local history or simply take in the spectacular scenery that has inspired generations of visitors.'
+            'Explore charming villages, cruise across tranquil waters, discover local history or simply take in the spectacular scenery that has inspired generations of visitors.',
           ),
           cards: [
-            { title: 'Scafell Pike', description: "England's highest mountain, a rewarding climb for keen walkers.", image: {} },
-            { title: 'Borrowdale Valley', description: "One of the Lake District's most beautiful valleys, right on the doorstep.", image: {} },
-            { title: 'Derwentwater', description: 'A tranquil lake perfect for cruises, lakeside walks and picnics.', image: {} },
-            { title: 'Keswick', description: 'A charming market town full of shops, cafes and local history.', image: {} },
-            { title: 'Catbells', description: 'A famous fell walk with sweeping views over Derwentwater.', image: {} },
-            { title: 'Honister Pass', description: 'A dramatic mountain pass home to a historic working slate mine.', image: {} },
+            {
+              title: 'Scafell Pike',
+              description: "England's highest mountain, a rewarding climb for keen walkers.",
+              image: {},
+            },
+            {
+              title: 'Borrowdale Valley',
+              description:
+                "One of the Lake District's most beautiful valleys, right on the doorstep.",
+              image: {},
+            },
+            {
+              title: 'Derwentwater',
+              description: 'A tranquil lake perfect for cruises, lakeside walks and picnics.',
+              image: {},
+            },
+            {
+              title: 'Keswick',
+              description: 'A charming market town full of shops, cafes and local history.',
+              image: {},
+            },
+            {
+              title: 'Catbells',
+              description: 'A famous fell walk with sweeping views over Derwentwater.',
+              image: {},
+            },
+            {
+              title: 'Honister Pass',
+              description: 'A dramatic mountain pass home to a historic working slate mine.',
+              image: {},
+            },
           ],
         }),
         ctaBanner('Your Lake District adventure starts here.', 'Book your stay today', '/contact/'),
@@ -248,7 +289,7 @@ const documents = [
         richText(
           'Browse our gallery and experience the charm of The Scafell Hotel before you arrive.',
           'Explore our comfortable bedrooms, inviting restaurant, beautiful surroundings and unforgettable Lake District views.',
-          'Every image tells part of the story of your next escape.'
+          'Every image tells part of the story of your next escape.',
         ),
       ],
     },
@@ -266,19 +307,43 @@ const documents = [
           'Phone: +44 17687 77208',
           'Email: info@scafellhotel.co.uk',
           'Complete our enquiry form and a member of our team will get back to you as soon as possible.',
-          'We look forward to welcoming you to The Scafell Hotel.'
+          'We look forward to welcoming you to The Scafell Hotel.',
         ),
       ],
     },
   },
   // Offer documents (repeatable type)
   ...[
-    ['seasonal-getaway-packages', 'Seasonal getaway packages', 'Enjoy specially priced breaks that make the most of the Lake District in every season.'],
-    ['midweek-stay-offers', 'Midweek stay offers', 'Escape the crowds with great-value midweek stays in the heart of Borrowdale.'],
-    ['walking-and-adventure-breaks', 'Walking and adventure breaks', 'Breaks designed for walkers and adventurers, with hearty breakfasts to set you up for the fells.'],
-    ['dining-experiences', 'Dining experiences', 'Combine your stay with memorable meals in our restaurant celebrating the finest local produce.'],
-    ['extended-stay-savings', 'Extended stay savings', 'Stay longer and save with reduced rates on extended countryside retreats.'],
-    ['special-occasion-packages', 'Special occasion packages', 'Celebrate birthdays, anniversaries and milestones with a bespoke Lakeland package.'],
+    [
+      'seasonal-getaway-packages',
+      'Seasonal getaway packages',
+      'Enjoy specially priced breaks that make the most of the Lake District in every season.',
+    ],
+    [
+      'midweek-stay-offers',
+      'Midweek stay offers',
+      'Escape the crowds with great-value midweek stays in the heart of Borrowdale.',
+    ],
+    [
+      'walking-and-adventure-breaks',
+      'Walking and adventure breaks',
+      'Breaks designed for walkers and adventurers, with hearty breakfasts to set you up for the fells.',
+    ],
+    [
+      'dining-experiences',
+      'Dining experiences',
+      'Combine your stay with memorable meals in our restaurant celebrating the finest local produce.',
+    ],
+    [
+      'extended-stay-savings',
+      'Extended stay savings',
+      'Stay longer and save with reduced rates on extended countryside retreats.',
+    ],
+    [
+      'special-occasion-packages',
+      'Special occasion packages',
+      'Celebrate birthdays, anniversaries and milestones with a bespoke Lakeland package.',
+    ],
   ].map(([uid, name, description]) => ({
     title: name,
     type: 'offer',

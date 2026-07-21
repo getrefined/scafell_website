@@ -14,7 +14,11 @@
       "primary": {
         "body": {
           "type": "StructuredText",
-          "config": { "label": "Body", "placeholder": "Body copy", "multi": "paragraph,strong,em,hyperlink" }
+          "config": {
+            "label": "Body",
+            "placeholder": "Body copy",
+            "multi": "paragraph,strong,em,hyperlink"
+          }
         }
       },
       "items": {}

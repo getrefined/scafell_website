@@ -31,8 +31,7 @@ const {
 const p = slice?.primary;
 
 /** Plain text from a Prismic Text or StructuredText field. */
-const text = (f: any): string =>
-  typeof f === 'string' ? f : f ? (prismic.asText(f) ?? '') : '';
+const text = (f: any): string => (typeof f === 'string' ? f : f ? (prismic.asText(f) ?? '') : '');
 
 /** Internal paths (Prismic values and props are base-less) get the deploy base. */
 const resolveHref = (href?: string | null): string | undefined =>

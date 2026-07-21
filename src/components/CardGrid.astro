@@ -23,8 +23,7 @@ const { slice, heading, intro, cards = [], columns = 3, accent = 'fell' } = Astr
 const p = slice?.primary;
 
 /** Plain text from a Prismic Text or StructuredText field. */
-const text = (f: any): string =>
-  typeof f === 'string' ? f : f ? (prismic.asText(f) ?? '') : '';
+const text = (f: any): string => (typeof f === 'string' ? f : f ? (prismic.asText(f) ?? '') : '');
 
 const finalHeading = (p ? text(p.heading).trim() : '') || heading;
 
@@ -62,14 +61,12 @@ const resolvedCards: ResolvedCard[] = p?.cards?.length
         alt: prismicImage?.alt || fallback?.alt || title,
       };
     })
-  : cards.map(
-      (c): ResolvedCard => ({
-        title: c.title,
-        description: c.description,
-        localImage: c.image,
-        alt: c.alt ?? c.title,
-      })
-    );
+  : cards.map((c): ResolvedCard => ({
+      title: c.title,
+      description: c.description,
+      localImage: c.image,
+      alt: c.alt ?? c.title,
+    }));
 ---
 
 <section class="section container">

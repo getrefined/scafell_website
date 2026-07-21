@@ -22,7 +22,12 @@ import { fileURLToPath } from 'node:url';
 
 // Load from project config, fall back to env vars
 let config = {};
-const configPath = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', 'docs', 'project-config.json');
+const configPath = path.join(
+  path.dirname(fileURLToPath(import.meta.url)),
+  '..',
+  'docs',
+  'project-config.json',
+);
 if (fs.existsSync(configPath)) {
   config = JSON.parse(fs.readFileSync(configPath, 'utf-8'));
 }
@@ -30,10 +35,12 @@ if (fs.existsSync(configPath)) {
 const MAILGUN_API_KEY = process.env.MAILGUN_API_KEY || '{MAILGUN_API_KEY}';
 const MAILGUN_DOMAIN = config.mailgun?.domain || process.env.MAILGUN_DOMAIN || '{MAILGUN_DOMAIN}';
 const CLOUDFLARE_TOKEN = process.env.CLOUDFLARE_TOKEN || '{CLOUDFLARE_TOKEN}';
-const CLOUDFLARE_ZONE_ID = config.cloudflare?.zoneId || process.env.CLOUDFLARE_ZONE_ID || '{CLOUDFLARE_ZONE_ID}';
+const CLOUDFLARE_ZONE_ID =
+  config.cloudflare?.zoneId || process.env.CLOUDFLARE_ZONE_ID || '{CLOUDFLARE_ZONE_ID}';
 
 const MAILGUN_REGION = process.env.MAILGUN_REGION || 'EU';
-const MAILGUN_API = MAILGUN_REGION === 'US' ? 'https://api.mailgun.net/v3' : 'https://api.eu.mailgun.net/v3';
+const MAILGUN_API =
+  MAILGUN_REGION === 'US' ? 'https://api.mailgun.net/v3' : 'https://api.eu.mailgun.net/v3';
 const CF_API = 'https://api.cloudflare.com/client/v4';
 
 // --- Step 1: Create Mailgun domain ---
@@ -48,7 +55,7 @@ async function createMailgunDomain() {
   const res = await fetch(`${MAILGUN_API}/domains`, {
     method: 'POST',
     headers: {
-      'Authorization': 'Basic ' + btoa(`api:${MAILGUN_API_KEY}`),
+      Authorization: 'Basic ' + btoa(`api:${MAILGUN_API_KEY}`),
     },
     body: form,
   });
@@ -71,7 +78,7 @@ async function createMailgunDomain() {
 async function getDomainInfo() {
   const res = await fetch(`${MAILGUN_API}/domains/${MAILGUN_DOMAIN}`, {
     headers: {
-      'Authorization': 'Basic ' + btoa(`api:${MAILGUN_API_KEY}`),
+      Authorization: 'Basic ' + btoa(`api:${MAILGUN_API_KEY}`),
     },
   });
 
@@ -98,7 +105,7 @@ async function addCloudflareRecord(record) {
   const res = await fetch(`${CF_API}/zones/${CLOUDFLARE_ZONE_ID}/dns_records`, {
     method: 'POST',
     headers: {
-      'Authorization': `Bearer ${CLOUDFLARE_TOKEN}`,
+      Authorization: `Bearer ${CLOUDFLARE_TOKEN}`,
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(body),
@@ -106,7 +113,7 @@ async function addCloudflareRecord(record) {
 
   const data = await res.json();
   if (!data.success) {
-    const errors = data.errors?.map(e => e.message).join(', ');
+    const errors = data.errors?.map((e) => e.message).join(', ');
     if (errors?.includes('already exists')) {
       console.log(`    Already exists, skipping.`);
       return;
@@ -144,7 +151,12 @@ async function setupDNS(domainData) {
   await addCloudflareRecord({
     record_type: 'TXT',
     name: `_dmarc.${parentDomain}`,
-    value: 'v=DMARC1; p=none; pct=100; fo=1; ri=3600; rua=mailto:dmarc@' + parentDomain + '; ruf=mailto:dmarc@' + parentDomain + ';',
+    value:
+      'v=DMARC1; p=none; pct=100; fo=1; ri=3600; rua=mailto:dmarc@' +
+      parentDomain +
+      '; ruf=mailto:dmarc@' +
+      parentDomain +
+      ';',
   });
 }
 
@@ -155,7 +167,7 @@ async function verifyDomain() {
   const res = await fetch(`${MAILGUN_API}/domains/${MAILGUN_DOMAIN}/verify`, {
     method: 'PUT',
     headers: {
-      'Authorization': 'Basic ' + btoa(`api:${MAILGUN_API_KEY}`),
+      Authorization: 'Basic ' + btoa(`api:${MAILGUN_API_KEY}`),
     },
   });
 

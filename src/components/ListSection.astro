@@ -11,13 +11,11 @@ const { slice, heading, items = [] } = Astro.props;
 const p = slice?.primary;
 
 /** Plain text from a Prismic Text or StructuredText field. */
-const text = (f: any): string =>
-  typeof f === 'string' ? f : f ? (prismic.asText(f) ?? '') : '';
+const text = (f: any): string => (typeof f === 'string' ? f : f ? (prismic.asText(f) ?? '') : '');
 
 const finalHeading = (p ? text(p.heading).trim() : '') || heading;
 
-const sliceItems: string[] =
-  p?.items?.map((i: any) => text(i.item).trim()).filter(Boolean) ?? [];
+const sliceItems: string[] = p?.items?.map((i: any) => text(i.item).trim()).filter(Boolean) ?? [];
 const finalItems = sliceItems.length ? sliceItems : items;
 ---
 

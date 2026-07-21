@@ -28,6 +28,7 @@ export const offers: Offer[] = [
   },
   {
     name: 'Special occasion packages',
-    description: 'Birthdays, anniversaries and celebrations, made memorable in the heart of the Lakes.',
+    description:
+      'Birthdays, anniversaries and celebrations, made memorable in the heart of the Lakes.',
   },
 ];

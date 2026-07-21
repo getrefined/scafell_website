@@ -39,10 +39,16 @@ const diningHtml =
       <div class="container reveal">
         <h2>Fresh. Seasonal. Local.</h2>
         <p>
-          From relaxed lunches to memorable evening meals, our restaurant offers warm
-          hospitality and exceptional flavours in a welcoming setting.
+          From relaxed lunches to memorable evening meals, our restaurant offers warm hospitality
+          and exceptional flavours in a welcoming setting.
         </p>
-        {site.menusUrl && <a class="btn btn--ghost" href={site.menusUrl}>View Menus</a>}
+        {
+          site.menusUrl && (
+            <a class="btn btn--ghost" href={site.menusUrl}>
+              View Menus
+            </a>
+          )
+        }
       </div>
     </section>
 

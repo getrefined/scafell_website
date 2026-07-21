@@ -138,7 +138,7 @@ const { photos } = Astro.props;
     item.addEventListener('click', () => {
       show(i);
       dialog?.showModal();
-    })
+    }),
   );
 
   document.querySelector('.lightbox__close')?.addEventListener('click', () => dialog?.close());

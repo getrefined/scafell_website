@@ -27,59 +27,59 @@ export default {
     const path = url.pathname;
 
     // CORS preflight
-    if (request.method === "OPTIONS") {
+    if (request.method === 'OPTIONS') {
       return corsResponse(env, 204);
     }
 
     // Route by path, validate method per-route
-    if (path === "/api/instagram-feed") {
-      if (request.method !== "GET") {
-        return corsResponse(env, 405, "Method not allowed");
+    if (path === '/api/instagram-feed') {
+      if (request.method !== 'GET') {
+        return corsResponse(env, 405, 'Method not allowed');
       }
       return handleInstagramFeed(request, env, ctx);
     }
 
-    if (request.method !== "POST") {
-      return corsResponse(env, 405, "Method not allowed");
+    if (request.method !== 'POST') {
+      return corsResponse(env, 405, 'Method not allowed');
     }
 
-    if (path === "/webhook" || path === "/") {
+    if (path === '/webhook' || path === '/') {
       return handleWebhook(request, env, url);
     }
 
-    if (path === "/contact") {
+    if (path === '/contact') {
       return handleContactForm(request, env);
     }
 
-    return new Response("Not found", { status: 404 });
+    return new Response('Not found', { status: 404 });
   },
 };
 
 // --- Prismic Webhook Handler ---
 async function handleWebhook(request, env, url) {
   if (env.WEBHOOK_SECRET) {
-    const secret = url.searchParams.get("secret");
+    const secret = url.searchParams.get('secret');
     if (secret !== env.WEBHOOK_SECRET) {
-      return new Response("Unauthorized", { status: 401 });
+      return new Response('Unauthorized', { status: 401 });
     }
   }
 
   const githubResponse = await fetch(
-    "https://api.github.com/repos/getrefined/scafell_website/actions/workflows/prismic-rebuild.yml/dispatches",
+    'https://api.github.com/repos/getrefined/scafell_website/actions/workflows/prismic-rebuild.yml/dispatches',
     {
-      method: "POST",
+      method: 'POST',
       headers: {
         Authorization: `Bearer ${env.GITHUB_TOKEN}`,
-        Accept: "application/vnd.github+json",
-        "Content-Type": "application/json",
-        "User-Agent": "scafell_website-webhook",
+        Accept: 'application/vnd.github+json',
+        'Content-Type': 'application/json',
+        'User-Agent': 'scafell_website-webhook',
       },
-      body: JSON.stringify({ ref: "main" }),
-    }
+      body: JSON.stringify({ ref: 'main' }),
+    },
   );
 
   if (githubResponse.status === 204) {
-    return new Response("Rebuild triggered", { status: 200 });
+    return new Response('Rebuild triggered', { status: 200 });
   }
 
   const body = await githubResponse.text();
@@ -91,31 +91,31 @@ async function handleWebhook(request, env, url) {
 // --- Contact Form Handler ---
 async function handleContactForm(request, env) {
   let data;
-  const contentType = request.headers.get("content-type") || "";
+  const contentType = request.headers.get('content-type') || '';
 
-  if (contentType.includes("application/json")) {
+  if (contentType.includes('application/json')) {
     data = await request.json();
-  } else if (contentType.includes("form")) {
+  } else if (contentType.includes('form')) {
     const formData = await request.formData();
     data = Object.fromEntries(formData.entries());
   } else {
-    return corsResponse(env, 400, "Unsupported content type");
+    return corsResponse(env, 400, 'Unsupported content type');
   }
 
-  const { name, email, phone, "project-type": projectType, message } = data;
+  const { name, email, phone, 'project-type': projectType, message } = data;
 
   if (!name || !email) {
-    return corsResponse(env, 400, "Name and email are required");
+    return corsResponse(env, 400, 'Name and email are required');
   }
 
   // Reject header-injection characters and oversized names
   if (!/^[^\r\n<>"]{1,100}$/.test(name)) {
-    return corsResponse(env, 400, "Invalid name");
+    return corsResponse(env, 400, 'Invalid name');
   }
 
   // Basic email format check
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-    return corsResponse(env, 400, "Invalid email address");
+    return corsResponse(env, 400, 'Invalid email address');
   }
 
   // Build email body
@@ -128,55 +128,54 @@ async function handleContactForm(request, env) {
     projectType ? `Project Type: ${projectType}` : null,
     ``,
     `Message:`,
-    message || "(no message)",
+    message || '(no message)',
   ]
     .filter(Boolean)
-    .join("\n");
+    .join('\n');
 
   // Send via Mailgun
   const mailgunUrl = `https://api.eu.mailgun.net/v3/${env.MAILGUN_DOMAIN}/messages`;
   // Use https://api.mailgun.net for US region
 
   const form = new URLSearchParams();
-  form.append("from", `Website Enquiry <noreply@${env.MAILGUN_DOMAIN}>`);
-  form.append("to", env.RECIPIENT_EMAIL);
-  form.append("reply-to", email);
-  form.append("subject", `Website Enquiry from ${name}`);
-  form.append("text", emailBody);
+  form.append('from', `Website Enquiry <noreply@${env.MAILGUN_DOMAIN}>`);
+  form.append('to', env.RECIPIENT_EMAIL);
+  form.append('reply-to', email);
+  form.append('subject', `Website Enquiry from ${name}`);
+  form.append('text', emailBody);
 
   const mgResponse = await fetch(mailgunUrl, {
-    method: "POST",
+    method: 'POST',
     headers: {
-      Authorization: "Basic " + btoa(`api:${env.MAILGUN_API_KEY}`),
+      Authorization: 'Basic ' + btoa(`api:${env.MAILGUN_API_KEY}`),
     },
     body: form,
   });
 
   if (!mgResponse.ok) {
     const errText = await mgResponse.text();
-    console.error("Mailgun error:", errText);
-    return corsResponse(env, 500, "Failed to send message. Please try again.");
+    console.error('Mailgun error:', errText);
+    return corsResponse(env, 500, 'Failed to send message. Please try again.');
   }
 
-  return corsResponse(env, 200, "Message sent successfully");
+  return corsResponse(env, 200, 'Message sent successfully');
 }
 
 // --- Instagram Feed Handler ---
-const INSTAGRAM_API_BASE = "https://graph.instagram.com/v24.0";
-const INSTAGRAM_FIELDS =
-  "id,media_type,media_url,thumbnail_url,permalink,caption,timestamp";
+const INSTAGRAM_API_BASE = 'https://graph.instagram.com/v24.0';
+const INSTAGRAM_FIELDS = 'id,media_type,media_url,thumbnail_url,permalink,caption,timestamp';
 const DEFAULT_INSTAGRAM_LIMIT = 8;
 const DEFAULT_CACHE_TTL = 1800;
 
 async function handleInstagramFeed(request, env, ctx) {
   if (!env.INSTAGRAM_ACCESS_TOKEN || !env.INSTAGRAM_USER_ID) {
-    return corsResponse(env, 500, "Instagram integration not configured");
+    return corsResponse(env, 500, 'Instagram integration not configured');
   }
 
-  const corsOrigin = env.ALLOWED_ORIGIN || "*";
+  const corsOrigin = env.ALLOWED_ORIGIN || '*';
 
   // Check cache first
-  const cacheKey = new Request("https://cache.internal/instagram-feed");
+  const cacheKey = new Request('https://cache.internal/instagram-feed');
   const cache = caches.default;
 
   const cached = await cache.match(cacheKey);
@@ -188,7 +187,7 @@ async function handleInstagramFeed(request, env, ctx) {
 
   const apiResponse = await fetch(url);
   if (!apiResponse.ok) {
-    return corsResponse(env, 502, "Failed to fetch Instagram feed");
+    return corsResponse(env, 502, 'Failed to fetch Instagram feed');
   }
 
   const json = await apiResponse.json();
@@ -196,11 +195,11 @@ async function handleInstagramFeed(request, env, ctx) {
 
   const response = new Response(JSON.stringify(json.data), {
     headers: {
-      "Content-Type": "application/json",
-      "Cache-Control": `public, max-age=${ttl}`,
-      "Access-Control-Allow-Origin": corsOrigin,
-      "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-      "Access-Control-Allow-Headers": "Content-Type",
+      'Content-Type': 'application/json',
+      'Cache-Control': `public, max-age=${ttl}`,
+      'Access-Control-Allow-Origin': corsOrigin,
+      'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type',
     },
   });
 
@@ -211,20 +210,20 @@ async function handleInstagramFeed(request, env, ctx) {
 
 // --- CORS Helper ---
 function corsResponse(env, status, body) {
-  const origin = env.ALLOWED_ORIGIN || "*";
+  const origin = env.ALLOWED_ORIGIN || '*';
   const headers = {
-    "Access-Control-Allow-Origin": origin,
-    "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-    "Access-Control-Allow-Headers": "Content-Type",
-    "Content-Type": "application/json",
+    'Access-Control-Allow-Origin': origin,
+    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type',
+    'Content-Type': 'application/json',
   };
 
   if (status === 204) {
     return new Response(null, { status, headers });
   }
 
-  return new Response(
-    JSON.stringify({ success: status < 400, message: body || "" }),
-    { status, headers }
-  );
+  return new Response(JSON.stringify({ success: status < 400, message: body || '' }), {
+    status,
+    headers,
+  });
 }

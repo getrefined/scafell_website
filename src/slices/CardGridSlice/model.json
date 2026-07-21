@@ -18,7 +18,11 @@
         },
         "intro": {
           "type": "StructuredText",
-          "config": { "label": "Intro", "placeholder": "Intro copy", "multi": "paragraph,strong,em,hyperlink" }
+          "config": {
+            "label": "Intro",
+            "placeholder": "Intro copy",
+            "multi": "paragraph,strong,em,hyperlink"
+          }
         },
         "cards": {
           "type": "Group",

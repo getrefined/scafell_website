@@ -26,8 +26,8 @@ const heroSlice = sliceOf(slices, 'hero_slice');
       <div class="contact-grid">
         <div class="reveal">
           <p>
-            Whether you're planning a relaxing getaway, booking a table, organising an
-            event or simply have a question, our team is here to help.
+            Whether you're planning a relaxing getaway, booking a table, organising an event or
+            simply have a question, our team is here to help.
           </p>
 
           <h2>Contact Information</h2>
@@ -40,8 +40,10 @@ const heroSlice = sliceOf(slices, 'hero_slice');
             {site.address.country}
           </address>
           <p>
-            <strong>Phone:</strong> <a href={site.phoneHref}>{site.phone}</a><br />
-            <strong>Email:</strong> <a href={`mailto:${site.email}`}>{site.email}</a>
+            <strong>Phone:</strong>
+            <a href={site.phoneHref}>{site.phone}</a><br />
+            <strong>Email:</strong>
+            <a href={`mailto:${site.email}`}>{site.email}</a>
           </p>
           <p><a class="btn" href={site.directionsUrl}>Get directions</a></p>
         </div>
@@ -49,8 +51,8 @@ const heroSlice = sliceOf(slices, 'hero_slice');
         <div class="reveal">
           <h2>Enquiry Form</h2>
           <p>
-            Complete our enquiry form and a member of our team will get back to you as
-            soon as possible.
+            Complete our enquiry form and a member of our team will get back to you as soon as
+            possible.
           </p>
           <EnquiryForm />
           <p style="margin-top: var(--space-s);">
@@ -69,7 +71,9 @@ const heroSlice = sliceOf(slices, 'hero_slice');
   }
 
   @media (min-width: 50rem) {
-    .contact-grid { grid-template-columns: 1fr 1.2fr; }
+    .contact-grid {
+      grid-template-columns: 1fr 1.2fr;
+    }
   }
 
   address {

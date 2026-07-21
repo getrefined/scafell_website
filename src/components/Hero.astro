@@ -77,8 +77,12 @@ const { image, alt, title, subtitle, short = false } = Astro.props;
     animation: rise 0.9s var(--ease-out) forwards;
   }
 
-  .hero__subtitle { animation-delay: 0.25s; }
-  .hero__actions { animation-delay: 0.5s; }
+  .hero__subtitle {
+    animation-delay: 0.25s;
+  }
+  .hero__actions {
+    animation-delay: 0.5s;
+  }
 
   .hero__subtitle {
     max-width: 44rem;
@@ -95,8 +99,12 @@ const { image, alt, title, subtitle, short = false } = Astro.props;
   }
 
   @keyframes kenburns {
-    from { transform: scale(1); }
-    to { transform: scale(1.08); }
+    from {
+      transform: scale(1);
+    }
+    to {
+      transform: scale(1.08);
+    }
   }
 
   @keyframes rise {
@@ -111,7 +119,9 @@ const { image, alt, title, subtitle, short = false } = Astro.props;
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .hero__img { animation: none; }
+    .hero__img {
+      animation: none;
+    }
     .hero__title,
     .hero__subtitle,
     .hero__actions {

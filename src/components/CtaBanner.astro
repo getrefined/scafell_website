@@ -7,11 +7,7 @@ interface Props {
   buttonHref?: string;
 }
 
-const {
-  heading,
-  buttonLabel = 'Book your stay today',
-  buttonHref = bookingHref,
-} = Astro.props;
+const { heading, buttonLabel = 'Book your stay today', buttonHref = bookingHref } = Astro.props;
 ---
 
 <section class="band section">
