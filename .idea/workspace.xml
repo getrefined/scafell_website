@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;
+  }
+}</component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <created>1762941897952</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1762941897952</updated>
+      <workItem from="1762941900933" duration="677000" />
+      <workItem from="1763031910238" duration="528000" />
+    </task>
+    <servers>
+      <JIRA shared="true" url="https://goj-platform-development.atlassian.net">
+        <option name="jiraVersion" value="1001.0.0-SNAPSHOT" />
+        <username>a.jerrom-smith@gov.je</username>
+      </JIRA>
+    </servers>
+  </component>
+</project>
