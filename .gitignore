@@ -16,5 +16,9 @@ yarn-error.log*
 
 # Secrets — never commit
 docs/project-config.json
+.env
+.env.*
+*.key
+*.pem
 
 .DS_Store

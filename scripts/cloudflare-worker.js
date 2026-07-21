@@ -57,11 +57,13 @@ export default {
 
 // --- Prismic Webhook Handler ---
 async function handleWebhook(request, env, url) {
-  if (env.WEBHOOK_SECRET) {
-    const secret = url.searchParams.get('secret');
-    if (secret !== env.WEBHOOK_SECRET) {
-      return new Response('Unauthorized', { status: 401 });
-    }
+  // Fail closed: an unset secret must not leave the rebuild trigger open
+  if (!env.WEBHOOK_SECRET) {
+    return new Response('Webhook not configured', { status: 500 });
+  }
+  const secret = url.searchParams.get('secret');
+  if (secret !== env.WEBHOOK_SECRET) {
+    return new Response('Unauthorized', { status: 401 });
   }
 
   const githubResponse = await fetch(
@@ -172,7 +174,8 @@ async function handleInstagramFeed(request, env, ctx) {
     return corsResponse(env, 500, 'Instagram integration not configured');
   }
 
-  const corsOrigin = env.ALLOWED_ORIGIN || '*';
+  // Fail closed: no configured origin → no CORS grant
+  const corsOrigin = env.ALLOWED_ORIGIN || '';
 
   // Check cache first
   const cacheKey = new Request('https://cache.internal/instagram-feed');
@@ -210,9 +213,9 @@ async function handleInstagramFeed(request, env, ctx) {
 
 // --- CORS Helper ---
 function corsResponse(env, status, body) {
-  const origin = env.ALLOWED_ORIGIN || '*';
+  // Fail closed: omit the CORS grant entirely when no origin is configured
   const headers = {
-    'Access-Control-Allow-Origin': origin,
+    ...(env.ALLOWED_ORIGIN ? { 'Access-Control-Allow-Origin': env.ALLOWED_ORIGIN } : {}),
     'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type',
     'Content-Type': 'application/json',
