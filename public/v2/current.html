@@ -18,12 +18,67 @@ a { color: #54728c; }
 a:hover { color: #2d3540; }
 @keyframes kenburns { from { transform: scale(1); } to { transform: scale(1.08); } }
 </style>
+
+<style id="v2-responsive">
+/* ── v2 mobile overrides (desktop unchanged) ─────────────────── */
+@media (max-width: 1120px) {
+  [style*="width: 1152px"] { width: auto !important; max-width: 100%; }
+}
+/* Collapse header nav into a hamburger dropdown */
+@media (max-width: 1100px) {
+  header > div { position: relative; }
+  header nav { display: none !important; }
+  header .v2-burger { display: grid !important; }
+  header > div > a[style*="background: #54728c"] { margin-left: auto !important; }
+  #v2nav:checked ~ nav {
+    display: block !important;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    margin: 0 !important;
+    background: #2d3540;
+    padding: 20px 24px;
+  }
+  #v2nav:checked ~ nav ul {
+    flex-direction: column !important;
+    gap: 14px !important;
+  }
+}
+/* Tablet: 3/4-column grids → 2 columns */
+@media (min-width: 821px) and (max-width: 1120px) {
+  [style*="grid-template-columns: repeat(3"],
+  [style*="grid-template-columns: repeat(4"] {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+/* Phone: stack layouts, fluid type, tighter gutters */
+@media (max-width: 820px) {
+  [style*="grid-template-columns"] { grid-template-columns: 1fr !important; }
+  [style*="grid-template-columns: repeat(3, minmax"],
+  [style*="grid-template-columns: repeat(4, minmax"] {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+  [style*="width: 704px"], [style*="width: 736px"] { width: auto !important; max-width: 100%; }
+  [style*="max-width: 1152px"] { padding-left: 20px !important; padding-right: 20px !important; }
+  h1 { font-size: clamp(2rem, 9vw, 3.4rem) !important; }
+  h2 { font-size: clamp(1.45rem, 6.5vw, 2.2rem) !important; }
+  h3 { font-size: clamp(1.15rem, 5vw, 1.45rem) !important; }
+  img { max-width: 100%; }
+}
+@media (max-width: 480px) {
+  [style*="grid-template-columns: repeat(3, minmax"],
+  [style*="grid-template-columns: repeat(4, minmax"] {
+    grid-template-columns: 1fr !important;
+  }
+}
+</style>
 </helmet>
 <div style="font-family: 'Manrope', system-ui, sans-serif; font-weight: 300; line-height: 1.7; color: #2d3540; background: #faf8f5; -webkit-font-smoothing: antialiased;">
   <!-- Header (transparent over hero) -->
   <header style="position: absolute; top: 0; left: 0; right: 0; z-index: 100; padding: 12px 0;">
     <div style="max-width: 1152px; margin: 0 auto; padding: 0 32px; display: flex; align-items: center; gap: 32px;">
-      <a href="index.html" style="display: block;"><img src="assets/logo-white.svg" alt="The Scafell Hotel" style="width: 110px; height: auto; display: block;"></a>
+      <a href="index.html" style="display: block;"><img src="assets/logo-white.svg" alt="The Scafell Hotel" style="width: 110px; height: auto; display: block;"></a><input type="checkbox" id="v2nav" style="display: none;"><label for="v2nav" class="v2-burger" aria-label="Menu" style="display: none; gap: 5px; cursor: pointer; padding: 10px; order: 5;"><span style="display: block; width: 24px; height: 2px; background: #ffffff;"></span><span style="display: block; width: 24px; height: 2px; background: #ffffff;"></span><span style="display: block; width: 24px; height: 2px; background: #ffffff;"></span></label>
       <nav style="margin-left: auto;">
         <ul style="display: flex; gap: 22.4px; list-style: none; margin: 0; padding: 0;">
           <li><a href="index.html" aria-current="page" style="color: #ffffff; text-decoration: none; font-size: 13.1px; font-weight: 400; letter-spacing: 0.12em; text-transform: uppercase; border-bottom: 1px solid #bdd9f2;">Home</a></li>
