@@ -46,6 +46,7 @@ const CSS = `
 /* Phone: stack layouts, fluid type, tighter gutters */
 @media (max-width: 820px) {
   [style*="grid-template-columns"] { grid-template-columns: 1fr !important; }
+  footer [style*="grid-template-columns"] { grid-template-columns: repeat(3, 1fr) !important; gap: 16px !important; }
   [style*="grid-template-columns: repeat(3, minmax"],
   [style*="grid-template-columns: repeat(4, minmax"] {
     grid-template-columns: repeat(2, 1fr) !important;
