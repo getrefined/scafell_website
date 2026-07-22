@@ -20,7 +20,7 @@ const CSS = `
   header > div { position: relative; }
   header nav { display: none !important; }
   header .v2-burger { display: grid !important; }
-  header > div > a[style*="background: #54728c"] { margin-left: auto !important; }
+  header > div > a:last-of-type { margin-left: auto !important; }
   #v2nav:checked ~ nav {
     display: block !important;
     position: absolute;
