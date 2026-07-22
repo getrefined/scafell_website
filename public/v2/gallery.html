@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+<link href="https://fonts.googleapis.com/css2?family=Prata&amp;family=Manrope:wght@300;400;700&amp;display=swap" rel="stylesheet">
+<style>
+body { margin: 0; background: #faf8f5; }
+a { color: #54728c; }
+a:hover { color: #2d3540; }
+</style>
+</helmet>
+<div style="font-family: 'Manrope', system-ui, sans-serif; font-weight: 300; line-height: 1.7; color: #2d3540; background: #faf8f5; -webkit-font-smoothing: antialiased;">
+  <header style="position: absolute; top: 0; left: 0; right: 0; z-index: 100; padding: 12px 0;">
+    <div style="max-width: 1152px; margin: 0 auto; padding: 0 32px; display: flex; align-items: center; gap: 32px;">
+      <a href="index.html" style="display: block;"><img src="assets/logo-white.svg" alt="The Scafell Hotel" style="width: 110px; height: auto; display: block;"></a>
+      <nav style="margin-left: auto;">
+        <ul style="display: flex; gap: 22.4px; list-style: none; margin: 0; padding: 0;">
+          <li><a href="index.html" style="color: #ffffff; text-decoration: none; font-size: 13.1px; font-weight: 400; letter-spacing: 0.12em; text-transform: uppercase; border-bottom: 1px solid transparent;" style-hover="border-bottom: 1px solid #bdd9f2;">Home</a></li>
+          <li><a href="rooms.html" style="color: #ffffff; text-decoration: none; font-size: 13.1px; font-weight: 400; letter-spacing: 0.12em; text-transform: uppercase; border-bottom: 1px solid transparent;" style-hover="border-bottom: 1px solid #bdd9f2;">Rooms</a></li>
+          <li><a href="restaurant.html" style="color: #ffffff; text-decoration: none; font-size: 13.1px; font-weight: 400; letter-spacing: 0.12em; text-transform: uppercase; border-bottom: 1px solid transparent;" style-hover="border-bottom: 1px solid #bdd9f2;">Restaurant</a></li>
+          <li><a href="private-events.html" style="color: #ffffff; text-decoration: none; font-size: 13.1px; font-weight: 400; letter-spacing: 0.12em; text-transform: uppercase; border-bottom: 1px solid transparent;" style-hover="border-bottom: 1px solid #bdd9f2;">Private Events</a></li>
+          <li><a href="offers.html" style="color: #ffffff; text-decoration: none; font-size: 13.1px; font-weight: 400; letter-spacing: 0.12em; text-transform: uppercase; border-bottom: 1px solid transparent;" style-hover="border-bottom: 1px solid #bdd9f2;">Offers</a></li>
+          <li><a href="explore.html" style="color: #ffffff; text-decoration: none; font-size: 13.1px; font-weight: 400; letter-spacing: 0.12em; text-transform: uppercase; border-bottom: 1px solid transparent;" style-hover="border-bottom: 1px solid #bdd9f2;">Explore</a></li>
+          <li><a href="gallery.html" aria-current="page" style="color: #ffffff; text-decoration: none; font-size: 13.1px; font-weight: 400; letter-spacing: 0.12em; text-transform: uppercase; border-bottom: 1px solid #bdd9f2;">Gallery</a></li>
+          <li><a href="contact.html" style="color: #ffffff; text-decoration: none; font-size: 13.1px; font-weight: 400; letter-spacing: 0.12em; text-transform: uppercase; border-bottom: 1px solid transparent;" style-hover="border-bottom: 1px solid #bdd9f2;">Contact</a></li>
+        </ul>
+      </nav>
+      <a href="contact.html" style="display: inline-block; font-weight: 700; font-size: 13.6px; letter-spacing: 0.14em; text-transform: uppercase; text-decoration: none; color: #ffffff; background: #54728c; border: 1px solid #54728c; border-radius: 4px; padding: 12px 27px;" style-hover="background: #2d3540; border-color: #2d3540;">Book Now</a>
+    </div>
+  </header>
+
+  <section data-screen-label="Hero" style="position: relative; display: grid; place-items: center; min-height: 55vh; overflow: hidden; isolation: isolate; text-align: center; color: #ffffff;">
+    <img src="assets/hero-gallery.jpg" alt="Views of The Scafell Hotel and its surroundings" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2;">
+    <div style="position: absolute; inset: 0; z-index: -1; background: linear-gradient(to bottom, rgba(20,26,32,0.55), rgba(20,26,32,0.45) 45%, rgba(20,26,32,0.65));"></div>
+    <div style="max-width: 1152px; margin: 0 auto; padding: 0 32px;">
+      <h1 style="font-family: 'Prata', Georgia, serif; font-weight: 400; line-height: 1.15; margin: 0; font-size: 60.8px;">Discover The Scafell Hotel</h1>
+    </div>
+  </section>
+
+  <main>
+    <section data-screen-label="Gallery" style="padding: 64px 0;">
+      <div style="max-width: 1152px; margin: 0 auto; padding: 0 32px;">
+        <div style="max-width: 736px; margin-bottom: 40px;">
+          <p style="margin: 0 0 12px; font-size: 19.2px; line-height: 1.6;">Browse our gallery and experience the charm of The Scafell Hotel before you arrive.</p>
+          <p style="margin: 0;">Explore our comfortable bedrooms, inviting restaurant, beautiful surroundings and unforgettable Lake District views. Every image tells part of the story of your next escape.</p>
+        </div>
+        <div style="columns: 3; gap: 16px;">
+          <button type="button" data-index="0" onClick="{{ openImage }}" style="display: block; width: 100%; margin-bottom: 16px; padding: 0; border: 0; background: none; cursor: zoom-in; border-radius: 4px; overflow: hidden;"><img src="assets/hero-home.jpg" alt="The Lake District landscape" style="width: 100%; display: block;"></button>
+          <button type="button" data-index="1" onClick="{{ openImage }}" style="display: block; width: 100%; margin-bottom: 16px; padding: 0; border: 0; background: none; cursor: zoom-in; border-radius: 4px; overflow: hidden;"><img src="assets/feature-rooms.jpg" alt="A characterful bedroom" style="width: 100%; display: block;"></button>
+          <button type="button" data-index="2" onClick="{{ openImage }}" style="display: block; width: 100%; margin-bottom: 16px; padding: 0; border: 0; background: none; cursor: zoom-in; border-radius: 4px; overflow: hidden;"><img src="assets/feature-dining.jpg" alt="Dining at the hotel" style="width: 100%; display: block;"></button>
+          <button type="button" data-index="3" onClick="{{ openImage }}" style="display: block; width: 100%; margin-bottom: 16px; padding: 0; border: 0; background: none; cursor: zoom-in; border-radius: 4px; overflow: hidden;"><img src="assets/feature-explore.jpg" alt="Fells and valleys" style="width: 100%; display: block;"></button>
+          <button type="button" data-index="4" onClick="{{ openImage }}" style="display: block; width: 100%; margin-bottom: 16px; padding: 0; border: 0; background: none; cursor: zoom-in; border-radius: 4px; overflow: hidden;"><img src="assets/room-family.jpg" alt="A spacious family room" style="width: 100%; display: block;"></button>
+          <button type="button" data-index="5" onClick="{{ openImage }}" style="display: block; width: 100%; margin-bottom: 16px; padding: 0; border: 0; background: none; cursor: zoom-in; border-radius: 4px; overflow: hidden;"><img src="assets/room-double.jpg" alt="A cosy double room" style="width: 100%; display: block;"></button>
+          <button type="button" data-index="6" onClick="{{ openImage }}" style="display: block; width: 100%; margin-bottom: 16px; padding: 0; border: 0; background: none; cursor: zoom-in; border-radius: 4px; overflow: hidden;"><img src="assets/hero-explore.jpg" alt="Mountain scenery" style="width: 100%; display: block;"></button>
+          <button type="button" data-index="7" onClick="{{ openImage }}" style="display: block; width: 100%; margin-bottom: 16px; padding: 0; border: 0; background: none; cursor: zoom-in; border-radius: 4px; overflow: hidden;"><img src="assets/dining-detail.jpg" alt="Seasonal dishes" style="width: 100%; display: block;"></button>
+          <button type="button" data-index="8" onClick="{{ openImage }}" style="display: block; width: 100%; margin-bottom: 16px; padding: 0; border: 0; background: none; cursor: zoom-in; border-radius: 4px; overflow: hidden;"><img src="assets/hero-rooms.jpg" alt="Countryside views" style="width: 100%; display: block;"></button>
+          <button type="button" data-index="9" onClick="{{ openImage }}" style="display: block; width: 100%; margin-bottom: 16px; padding: 0; border: 0; background: none; cursor: zoom-in; border-radius: 4px; overflow: hidden;"><img src="assets/hero-contact.jpg" alt="The Borrowdale valley" style="width: 100%; display: block;"></button>
+          <button type="button" data-index="10" onClick="{{ openImage }}" style="display: block; width: 100%; margin-bottom: 16px; padding: 0; border: 0; background: none; cursor: zoom-in; border-radius: 4px; overflow: hidden;"><img src="assets/hero-offers.jpg" alt="Lake District scenery" style="width: 100%; display: block;"></button>
+          <button type="button" data-index="11" onClick="{{ openImage }}" style="display: block; width: 100%; margin-bottom: 16px; padding: 0; border: 0; background: none; cursor: zoom-in; border-radius: 4px; overflow: hidden;"><img src="assets/hero-events.jpg" alt="An event setting" style="width: 100%; display: block;"></button>
+        </div>
+      </div>
+    </section>
+
+    <sc-if value="{{ lightboxOpen }}" hint-placeholder-val="{{ false }}">
+      <div onClick="{{ closeLightbox }}" style="position: fixed; inset: 0; z-index: 200; background: rgba(20,26,32,0.9); display: grid; place-items: center;">
+        <img src="{{ lightboxSrc }}" alt="{{ lightboxAlt }}" style="max-width: 90vw; max-height: 85vh; object-fit: contain; border-radius: 4px;">
+        <button type="button" onClick="{{ closeLightbox }}" aria-label="Close" style="position: fixed; top: 16px; right: 16px; background: none; border: 0; color: #ffffff; font-size: 40px; line-height: 1; cursor: pointer; padding: 8px 16px;">×</button>
+        <button type="button" onClick="{{ prevImage }}" aria-label="Previous image" style="position: fixed; left: 16px; top: 50%; transform: translateY(-50%); background: none; border: 0; color: #ffffff; font-size: 40px; line-height: 1; cursor: pointer; padding: 8px 16px;">‹</button>
+        <button type="button" onClick="{{ nextImage }}" aria-label="Next image" style="position: fixed; right: 16px; top: 50%; transform: translateY(-50%); background: none; border: 0; color: #ffffff; font-size: 40px; line-height: 1; cursor: pointer; padding: 8px 16px;">›</button>
+      </div>
+    </sc-if>
+  </main>
+
+  <footer data-screen-label="Footer" style="background: #2d3540; color: #ffffff; padding: 64px 0 32px; border-top: 1px solid rgba(255,255,255,0.12);">
+    <div style="max-width: 1152px; margin: 0 auto; padding: 0 32px; display: grid; gap: 32px; grid-template-columns: repeat(3, 1fr);">
+      <div>
+        <img src="assets/logo-white.svg" alt="The Scafell Hotel" style="width: 140px; height: auto; display: block;">
+        <p style="font-size: 14.4px; opacity: 0.85; margin: 16px 0;">The Scafell Hotel<br>Lake District National Park<br>Rosthwaite, Keswick<br>CA12 5XB, United Kingdom</p>
+      </div>
+      <nav aria-label="Footer">
+        <ul style="list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; font-size: 14.4px;">
+          <li><a href="index.html" style="color: #bdd9f2; text-decoration: none;" style-hover="text-decoration: underline;">Homepage</a></li>
+          <li><a href="rooms.html" style="color: #bdd9f2; text-decoration: none;" style-hover="text-decoration: underline;">Rooms</a></li>
+          <li><a href="restaurant.html" style="color: #bdd9f2; text-decoration: none;" style-hover="text-decoration: underline;">Restaurant</a></li>
+          <li><a href="private-events.html" style="color: #bdd9f2; text-decoration: none;" style-hover="text-decoration: underline;">Private Events</a></li>
+          <li><a href="offers.html" style="color: #bdd9f2; text-decoration: none;" style-hover="text-decoration: underline;">Offers</a></li>
+          <li><a href="explore.html" style="color: #bdd9f2; text-decoration: none;" style-hover="text-decoration: underline;">Explore</a></li>
+          <li><a href="gallery.html" style="color: #bdd9f2; text-decoration: none;" style-hover="text-decoration: underline;">Gallery</a></li>
+          <li><a href="contact.html" style="color: #bdd9f2; text-decoration: none;" style-hover="text-decoration: underline;">Contact</a></li>
+        </ul>
+      </nav>
+      <div>
+        <p style="margin: 0 0 16px;"><a href="tel:+441768777208" style="color: #bdd9f2; text-decoration: none;" style-hover="text-decoration: underline;">+44 17687 77208</a><br><a href="mailto:info@scafellhotel.co.uk" style="color: #bdd9f2; text-decoration: none;" style-hover="text-decoration: underline;">info@scafellhotel.co.uk</a></p>
+        <a href="contact.html" style="display: inline-block; font-weight: 700; font-size: 13.6px; letter-spacing: 0.14em; text-transform: uppercase; text-decoration: none; color: #ffffff; background: transparent; border: 1px solid #ffffff; border-radius: 4px; padding: 12px 27px;" style-hover="background: #ffffff; color: #2d3540;">Book Now</a>
+      </div>
+    </div>
+    <p style="max-width: 1152px; margin: 64px auto 0; padding: 0 32px; font-size: 12.8px; opacity: 0.6;">© 2026 The Scafell Hotel, Lake District</p>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { open: false, index: 0 };
+  photos = [
+    { src: 'assets/hero-home.jpg', alt: 'The Lake District landscape' },
+    { src: 'assets/feature-rooms.jpg', alt: 'A characterful bedroom' },
+    { src: 'assets/feature-dining.jpg', alt: 'Dining at the hotel' },
+    { src: 'assets/feature-explore.jpg', alt: 'Fells and valleys' },
+    { src: 'assets/room-family.jpg', alt: 'A spacious family room' },
+    { src: 'assets/room-double.jpg', alt: 'A cosy double room' },
+    { src: 'assets/hero-explore.jpg', alt: 'Mountain scenery' },
+    { src: 'assets/dining-detail.jpg', alt: 'Seasonal dishes' },
+    { src: 'assets/hero-rooms.jpg', alt: 'Countryside views' },
+    { src: 'assets/hero-contact.jpg', alt: 'The Borrowdale valley' },
+    { src: 'assets/hero-offers.jpg', alt: 'Lake District scenery' },
+    { src: 'assets/hero-events.jpg', alt: 'An event setting' },
+  ];
+  componentDidMount() {
+    this.onKey = (e) => {
+      if (!this.state.open) return;
+      if (e.key === 'Escape') this.setState({ open: false });
+      if (e.key === 'ArrowLeft') this.step(-1);
+      if (e.key === 'ArrowRight') this.step(1);
+    };
+    window.addEventListener('keydown', this.onKey);
+  }
+  componentWillUnmount() { window.removeEventListener('keydown', this.onKey); }
+  step(d) { this.setState((s) => ({ index: (s.index + d + this.photos.length) % this.photos.length })); }
+  renderVals() {
+    const cur = this.photos[this.state.index];
+    return {
+      lightboxOpen: this.state.open,
+      lightboxSrc: cur.src,
+      lightboxAlt: cur.alt,
+      openImage: (e) => this.setState({ open: true, index: Number(e.currentTarget.dataset.index) }),
+      closeLightbox: (e) => { if (e.target === e.currentTarget) this.setState({ open: false }); },
+      prevImage: (e) => { e.stopPropagation(); this.step(-1); },
+      nextImage: (e) => { e.stopPropagation(); this.step(1); },
+    };
+  }
+}
+</script>
+</body>
+</html>

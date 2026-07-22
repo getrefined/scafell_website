@@ -4,7 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ac3a6b3f-99a7-4903-a60c-9596a4d28fbe" name="Changes" comment="" />
+    <list default="true" id="ac3a6b3f-99a7-4903-a60c-9596a4d28fbe" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -21,6 +24,15 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "alaistair76"
+  }
+}]]></component>
+  <component name="GithubDefaultAccount">
+    <option name="defaultAccountId" value="2837d928-c2f8-4ff1-9f1a-6b8be20af834" />
+  </component>
   <component name="GithubPullRequestsUISettings"><![CDATA[{
   "selectedUrlAndAccountId": {
     "url": "https://github.com/getrefined/scafell_website.git",
@@ -30,6 +42,65 @@
   <component name="McpProjectServerCommands">
     <commands />
     <urls />
+  </component>
+  <component name="NextEditCompletionFeaturesState">
+    <decayedCancelled>
+      <entry key="MS100" value="1.2239878834175217" />
+      <entry key="MS500" value="2.4735461282022873" />
+      <entry key="S2" value="3.475181430526828" />
+      <entry key="S5" value="3.7744865980927877" />
+      <entry key="S10" value="3.8844460146296584" />
+      <entry key="S30" value="3.9608405649493967" />
+      <entry key="S60" value="3.9803388287827675" />
+      <entry key="M2" value="3.9901489541010338" />
+      <entry key="M5" value="3.996054658714894" />
+      <entry key="M10" value="3.998026507829498" />
+      <entry key="M15" value="3.9986841559140833" />
+      <entry key="M30" value="3.9993419866182887" />
+      <entry key="H1" value="3.9996709704708375" />
+      <entry key="H2" value="3.9998354795253896" />
+      <entry key="H4" value="3.9999177383351308" />
+      <entry key="D1" value="3.9999862895242444" />
+      <entry key="W1" value="3.9999980413557514" />
+    </decayedCancelled>
+    <decayedSelected>
+      <entry key="MS100" value="0.0" />
+      <entry key="MS500" value="0.0" />
+      <entry key="S2" value="0.0" />
+      <entry key="S5" value="0.0" />
+      <entry key="S10" value="0.0" />
+      <entry key="S30" value="0.0" />
+      <entry key="S60" value="0.0" />
+      <entry key="M2" value="0.0" />
+      <entry key="M5" value="0.0" />
+      <entry key="M10" value="0.0" />
+      <entry key="M15" value="0.0" />
+      <entry key="M30" value="0.0" />
+      <entry key="H1" value="0.0" />
+      <entry key="H2" value="0.0" />
+      <entry key="H4" value="0.0" />
+      <entry key="D1" value="0.0" />
+      <entry key="W1" value="0.0" />
+    </decayedSelected>
+    <decayedShown>
+      <entry key="MS100" value="1.1768376735596573" />
+      <entry key="MS500" value="2.4444942385997557" />
+      <entry key="S2" value="3.461012744569334" />
+      <entry key="S5" value="3.7678764283704393" />
+      <entry key="S10" value="3.880962556688801" />
+      <entry key="S30" value="3.9596375958385126" />
+      <entry key="S60" value="3.979731975469057" />
+      <entry key="M2" value="3.989844174411276" />
+      <entry key="M5" value="3.9959324207139604" />
+      <entry key="M10" value="3.997965334358046" />
+      <entry key="M15" value="3.9986433614864523" />
+      <entry key="M30" value="3.9993215833456404" />
+      <entry key="H1" value="3.9996607673193982" />
+      <entry key="H2" value="3.9998303775708406" />
+      <entry key="H4" value="3.9999151872631424" />
+      <entry key="D1" value="3.9999858643324244" />
+      <entry key="W1" value="3.99999798061374" />
+    </decayedShown>
   </component>
   <component name="ProjectColorInfo"><![CDATA[{
   "associatedIndex": 2,
@@ -87,7 +158,7 @@
       <updated>1762941897952</updated>
       <workItem from="1762941900933" duration="677000" />
       <workItem from="1763031910238" duration="528000" />
-      <workItem from="1784633506514" duration="7257000" />
+      <workItem from="1784633506514" duration="9095000" />
     </task>
     <servers>
       <JIRA shared="true" url="https://goj-platform-development.atlassian.net">
