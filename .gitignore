@@ -22,3 +22,4 @@ docs/project-config.json
 *.pem
 
 .DS_Store
+/public/v2/node_modules/
