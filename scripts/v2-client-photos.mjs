@@ -19,6 +19,11 @@ const OUT = new URL('../public/v2/assets/', import.meta.url).pathname;
 // Slot shapes. Heroes are full-bleed 16:9; cards are 3:2 apart from the
 // restaurant showcase, which is a slightly taller 9:7.
 const HERO = { w: 1920, h: 1080 };
+// The client's five supplied banners are 1584x396. Cropping them to 16:9 would
+// throw away most of the frame, so they pass through at native size and let the
+// hero's `object-fit: cover` do the cropping. They will look soft until
+// full-size versions are purchased.
+const BANNER = 'passthrough';
 const CARD = { w: 1200, h: 800 };
 const DINING = { w: 900, h: 700 };
 const TILE = { w: 900, h: 600 };
@@ -28,18 +33,24 @@ const TILE = { w: 900, h: 600 };
 // feature-*.jpg) is still referenced by gallery.html, explore.html and
 // contact.html, so it gets rebuilt alongside the v2b-* set.
 const MAP = {
-  // --- heroes -------------------------------------------------------------
+  // --- page heroes: the client's banner artwork where one was supplied -----
+  'v2b-hero-rooms': ['Rooms/Bedroom banner.jpg', BANNER],
+  'v2b-hero-restaurant': ['Restaurant /Restaurant banner.jpg', BANNER],
+  'v2b-hero-events': ['Events/Events Banner.jpg', BANNER],
+  'v2b-hero-offers': ['Offers/Offers banner.jpg', BANNER],
+  'v2b-hero-explore': ['Explore/Explore banner.jpg', BANNER],
+  // No banner supplied for home, gallery or contact.
   'v2b-hero-home': ['Gallery/gsllery 10.jpg', HERO],
+  'hero-gallery': ['Gallery/gallery 7.jpg', HERO],
+  'hero-contact': ['Gallery/gallery1.jpeg', HERO],
+
+  // --- legacy hero-*.jpg: now only feed the gallery and explore grids, so
+  // they keep full-resolution photography rather than the banners ----------
   'hero-home': ['Gallery/gsllery 10.jpg', HERO],
-  'v2b-hero-rooms': ['Homepage/rest.jpeg', HERO],
   'hero-rooms': ['Homepage/rest.jpeg', HERO],
-  'v2b-hero-restaurant': ['Homepage/dine.jpeg', HERO],
-  'v2b-hero-events': ['Events/Celebration.jpeg', HERO],
   'hero-events': ['Events/Celebration.jpeg', HERO],
   'hero-offers': ['Gallery/gallery4.jpeg', HERO],
   'hero-explore': [`${CLIENT}/High Res Images/shutterstock_2602231543.jpg`, HERO],
-  'hero-gallery': ['Gallery/gallery 7.jpg', HERO],
-  'hero-contact': ['Gallery/gallery1.jpeg', HERO],
 
   // --- homepage feature cards --------------------------------------------
   // Twin rather than Double, so the gallery grid doesn't show the same
@@ -89,13 +100,19 @@ for (const [name, [src, slot]] of Object.entries(MAP)) {
   if (!fs.existsSync(from)) throw new Error(`missing source: ${from}`);
 
   const meta = await sharp(from).metadata();
-  // Fit the slot without ever enlarging the source.
-  const scale = Math.min(1, meta.width / slot.w, meta.height / slot.h);
-  const w = Math.round(slot.w * scale);
-  const h = Math.round(slot.h * scale);
+  let w = meta.width;
+  let h = meta.height;
+  const pipeline = sharp(from);
 
-  await sharp(from)
-    .resize(w, h, { fit: 'cover', position: 'centre' })
+  if (slot !== BANNER) {
+    // Fit the slot without ever enlarging the source.
+    const scale = Math.min(1, meta.width / slot.w, meta.height / slot.h);
+    w = Math.round(slot.w * scale);
+    h = Math.round(slot.h * scale);
+    pipeline.resize(w, h, { fit: 'cover', position: 'centre' });
+  }
+
+  await pipeline
     .jpeg({ quality: 82, mozjpeg: true })
     .toFile(path.join(OUT, `${name}.jpg`));
 
