@@ -73,6 +73,26 @@ input:focus-visible, textarea:focus-visible { outline: 2px solid #8a8c46; outlin
     grid-template-columns: 1fr !important;
   }
 }
+/* Floating header */
+header {
+  position: fixed !important;
+  transition: background-color 220ms ease, padding 220ms ease, box-shadow 220ms ease;
+}
+header img[alt="The Scafell Hotel"] { transition: width 220ms ease; }
+html.v2-scrolled header {
+  padding: 6px 0 !important;
+  background: rgba(45,53,64,0.94);
+  -webkit-backdrop-filter: saturate(140%) blur(10px);
+  backdrop-filter: saturate(140%) blur(10px);
+  box-shadow: 0 6px 24px rgba(20,26,32,0.28);
+}
+/* The logo is near-square (153x150), so its width drives the bar's height.
+   64px keeps the condensed header around 75px — the Book Now button then
+   becomes the tallest element in it. */
+html.v2-scrolled header img[alt="The Scafell Hotel"] { width: 64px !important; }
+@media (prefers-reduced-motion: reduce) {
+  header, header img[alt="The Scafell Hotel"] { transition: none; }
+}
 </style>
 </helmet>
 <div style="font-family: 'Manrope', system-ui, sans-serif; font-weight: 300; line-height: 1.7; color: #2d3540; background: #faf8f5; -webkit-font-smoothing: antialiased;">
@@ -184,5 +204,25 @@ class Component extends DCLogic {
 }
 </script>
 <a href="contact.html" id="v2-float-book" style="position: fixed; right: 20px; bottom: 25%; z-index: 300; display: inline-block; font-family: 'Manrope', system-ui, sans-serif; font-weight: 700; font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; text-decoration: none; color: #ffffff; background: #8a8c46; border: 1px solid #8a8c46; border-radius: 999px; padding: 14px 28px; box-shadow: 0 8px 24px rgba(45,53,64,0.35);" style-hover="background: #6f7136; border-color: #6f7136;">Book Now</a>
+  <script>
+    (function () {
+      // Flag lives on <html> so the React re-render of <x-dc> can't clear it.
+      var root = document.documentElement;
+      var ticking = false;
+
+      function sync() {
+        root.classList.toggle('v2-scrolled', window.scrollY > 60);
+        ticking = false;
+      }
+
+      window.addEventListener('scroll', function () {
+        if (ticking) return;
+        ticking = true;
+        window.requestAnimationFrame(sync);
+      }, { passive: true });
+
+      sync();
+    })();
+  </script>
 </body>
 </html>
