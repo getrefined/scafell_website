@@ -101,6 +101,17 @@ ul {
   border-color: var(--c-lake);
 }
 
+/* "Book Now" stands out from every other button (client amend: fell green) */
+.btn--book {
+  background: var(--c-fell);
+  border-color: var(--c-fell);
+}
+
+.btn--book:hover {
+  background: var(--c-fell-dark);
+  border-color: var(--c-fell-dark);
+}
+
 .btn--ghost {
   background: transparent;
   color: var(--c-white);
@@ -110,6 +121,22 @@ ul {
 .btn--ghost:hover {
   background: var(--c-white);
   color: var(--c-lake);
+}
+
+.band .btn--ghost:hover {
+  color: var(--c-gorse);
+}
+
+/* Floating Book Now, present on every page */
+.float-book {
+  position: fixed;
+  right: 20px;
+  bottom: 25%;
+  z-index: 300;
+  border-radius: 999px;
+  padding: 1em 2em;
+  font-size: 0.8rem;
+  box-shadow: 0 8px 24px rgba(45, 53, 64, 0.35);
 }
 
 /* Grids */
@@ -148,10 +175,15 @@ ul {
 }
 
 /* Full-width colour bands */
+/* Client amend: banners sit on gorse purple so they contrast with the lake-blue footer */
 .band {
-  background: var(--c-lake);
+  background: var(--c-gorse);
   color: var(--c-white);
   text-align: center;
+}
+
+.band--lake {
+  background: var(--c-lake);
 }
 
 .band--green {

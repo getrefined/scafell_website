@@ -1,0 +1,122 @@
+---
+/**
+ * Full-bleed alternating room block: photograph on one side, copy on the other.
+ * Rows alternate white / offwhite and flip the image side; on narrow screens the
+ * image stacks above the text.
+ */
+import { Image } from 'astro:assets';
+import type { Room } from '../content/rooms';
+import { bookingHref } from '../config/site';
+
+interface Props {
+  room: Room;
+  /** Image on the right, text on the left. */
+  flip?: boolean;
+  /** Section background; rows alternate. */
+  tone?: 'white' | 'offwhite';
+}
+
+const { room, flip = false, tone = 'white' } = Astro.props;
+const headingId = `room-${room.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
+---
+
+<section
+  class:list={['room', { 'room--flip': flip, 'room--offwhite': tone === 'offwhite' }]}
+  aria-labelledby={headingId}
+>
+  <Image
+    class="room__img"
+    src={room.image}
+    alt={room.alt}
+    widths={[600, 1200]}
+    sizes="(min-width: 50rem) 50vw, 100vw"
+  />
+  <div class="room__text reveal">
+    <span class="eyebrow room__eyebrow">{room.eyebrow}</span>
+    <h2 id={headingId}>{room.name}</h2>
+    <p>{room.description}</p>
+    <ul class="room__features" aria-label={`${room.name} room features`}>
+      {room.features.map((f) => <li>{f}</li>)}
+    </ul>
+    <div class="room__cta">
+      <a class="btn" href={bookingHref}>{room.ctaLabel ?? 'Book This Room →'}</a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .room {
+    display: grid;
+    background: var(--c-white);
+  }
+
+  .room--offwhite {
+    background: var(--c-offwhite);
+  }
+
+  .room__img {
+    width: 100%;
+    height: 100%;
+    min-height: 16rem;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+  }
+
+  .room__text {
+    display: grid;
+    align-content: center;
+    padding: clamp(var(--space-m), 6vw, 3.5rem) clamp(1rem, 4vw, 2rem);
+  }
+
+  .room__eyebrow {
+    color: var(--c-gorse);
+    margin-bottom: 0.75rem;
+  }
+
+  .room__text p {
+    margin: 0;
+  }
+
+  .room__features {
+    list-style: none;
+    margin: var(--space-s) 0 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-xs);
+  }
+
+  .room__features li {
+    font-size: 0.8rem;
+    font-weight: 400;
+    letter-spacing: 0.04em;
+    color: var(--c-gorse);
+    border: 1px solid rgba(124, 80, 110, 0.35);
+    border-radius: 999px;
+    padding: 0.25em 0.9em;
+  }
+
+  .room__cta {
+    margin-top: var(--space-m);
+  }
+
+  @media (min-width: 50rem) {
+    .room {
+      grid-template-columns: 1fr 1fr;
+      align-items: stretch;
+    }
+
+    .room__img {
+      aspect-ratio: auto;
+      min-height: 27.5rem;
+    }
+
+    .room__text {
+      padding: 3.5rem clamp(2rem, 6vw, 6rem);
+    }
+
+    .room--flip .room__img {
+      order: 2;
+    }
+  }
+</style>

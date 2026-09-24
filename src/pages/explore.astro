@@ -1,12 +1,12 @@
 ---
+import * as prismic from '@prismicio/client';
 import Base from '../layouts/Base.astro';
 import Hero from '../components/Hero.astro';
-import RichTextSection from '../components/RichTextSection.astro';
 import CardGrid from '../components/CardGrid.astro';
-import CtaBanner from '../components/CtaBanner.astro';
+import { bookingHref } from '../config/site';
 import { highlights } from '../content/explore';
 import { getPageSlices, sliceOf } from '../lib/prismicio';
-import heroExplore from '../assets/images/hero-explore.jpg';
+import heroExplore from '../assets/images/v2b-hero-explore.jpg';
 
 const slices = await getPageSlices('explore');
 const heroSlice = sliceOf(slices, 'hero_slice');
@@ -14,8 +14,18 @@ const introSlice = sliceOf(slices, 'rich_text_slice');
 const cardsSlice = sliceOf(slices, 'card_grid_slice');
 const ctaSlice = sliceOf(slices, 'cta_banner_slice');
 
-const introHtml =
+/*
+ * On the approved v2 layout the intro sits under the "Nearby Highlights"
+ * heading rather than in its own section, so it is passed to CardGrid as the
+ * intro. A published rich_text_slice still overrides the fallback copy.
+ */
+const fallbackIntro =
   "<p>The Scafell Hotel sits at the gateway to some of the Lake District's most iconic landscapes and outdoor adventures.</p><p>From gentle lakeside walks to challenging mountain hikes, there is something for every visitor to enjoy.</p>";
+const introBody = introSlice?.primary?.body;
+const introHtml =
+  introBody && (prismic.asText(introBody) ?? '').trim()
+    ? (prismic.asHTML(introBody) ?? fallbackIntro)
+    : fallbackIntro;
 
 const highlightCards = highlights.map((h) => ({
   title: h.name,
@@ -23,6 +33,9 @@ const highlightCards = highlights.map((h) => ({
   image: h.image,
   alt: h.alt,
 }));
+
+const ctaHeading = ctaSlice?.primary?.heading || 'Your Lake District adventure starts here';
+const ctaLabel = ctaSlice?.primary?.button_label || 'Book your stay today';
 ---
 
 <Base
@@ -37,17 +50,32 @@ const highlightCards = highlights.map((h) => ({
   />
 
   <main>
-    <RichTextSection slice={introSlice} body={introHtml} />
     <CardGrid
       slice={cardsSlice}
       heading="Nearby Highlights"
+      intro={introHtml}
       cards={highlightCards}
       columns={3}
       accent="fell"
     />
-    <RichTextSection
-      body="<p>Explore charming villages, cruise across tranquil waters, discover local history or simply take in the spectacular scenery that has inspired generations of visitors.</p><p>Your Lake District adventure starts here.</p>"
-    />
-    <CtaBanner heading={ctaSlice?.primary?.heading || 'Your Lake District adventure starts here'} />
+
+    <!-- Closing copy and CTA share one band, as on the approved v2 page -->
+    <section class="band section">
+      <div class="container reveal">
+        <h2>{ctaHeading}</h2>
+        <p class="cta-copy">
+          Explore charming villages, cruise across tranquil waters, discover local history or
+          simply take in the spectacular scenery that has inspired generations of visitors.
+        </p>
+        <a class="btn btn--ghost" href={bookingHref}>{ctaLabel}</a>
+      </div>
+    </section>
   </main>
 </Base>
+
+<style>
+  .cta-copy {
+    max-width: 44rem;
+    margin: 0 auto var(--space-m);
+  }
+</style>

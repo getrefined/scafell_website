@@ -1,29 +1,88 @@
 ---
-interface Props {
-  offers: { name: string; description: string }[];
+import type { ImageMetadata } from 'astro';
+import { Image } from 'astro:assets';
+import { bookingHref } from '../config/site';
+import { offerImages } from '../content/offers';
+
+interface OfferCard {
+  name: string;
+  description: string;
+  /** Local (imported) image. */
+  image?: ImageMetadata;
+  /** Remote image URL, e.g. from a Prismic image field. Wins over `image`. */
+  imageUrl?: string;
+  alt?: string;
 }
 
-const { offers } = Astro.props;
+interface Props {
+  offers: OfferCard[];
+  ctaLabel?: string;
+  ctaHref?: string;
+}
+
+const { offers, ctaLabel = 'Book This Offer', ctaHref = bookingHref } = Astro.props;
+
+/*
+ * Offers without any image (typically Prismic documents) rotate through the
+ * client's offer photography so the grid never renders a bare text card.
+ */
+const fallbackImage = (i: number): ImageMetadata | undefined =>
+  offerImages.length ? offerImages[i % offerImages.length] : undefined;
 ---
 
 <div class="grid grid--3">
   {
-    offers.map((offer, i) => (
-      <article class={`offer-card reveal reveal-delay-${(i % 3) + 1}`}>
-        <h3>{offer.name}</h3>
-        <p>{offer.description}</p>
-      </article>
-    ))
+    offers.map((offer, i) => {
+      const localImage = offer.imageUrl ? undefined : (offer.image ?? fallbackImage(i));
+      const alt = offer.alt || offer.name;
+      return (
+        <article class={`offer-card reveal reveal-delay-${(i % 3) + 1}`}>
+          {offer.imageUrl ? (
+            <img src={offer.imageUrl} alt={alt} loading="lazy" />
+          ) : localImage ? (
+            <Image
+              src={localImage}
+              alt={alt}
+              widths={[400, 800]}
+              sizes="(min-width: 50rem) 33vw, 100vw"
+            />
+          ) : null}
+          <div class="offer-card__body">
+            <h3>{offer.name}</h3>
+            <p>{offer.description}</p>
+            <a class="btn" href={ctaHref}>
+              {ctaLabel} &rarr;
+            </a>
+          </div>
+        </article>
+      );
+    })
   }
 </div>
 
 <style>
   .offer-card {
+    display: flex;
+    flex-direction: column;
     background: var(--c-white);
     border-top: 3px solid var(--c-fell);
     border-radius: var(--radius);
-    padding: var(--space-m);
+    overflow: hidden;
     box-shadow: 0 10px 30px rgba(45, 53, 64, 0.08);
+  }
+
+  .offer-card img {
+    aspect-ratio: 3 / 2;
+    object-fit: cover;
+    width: 100%;
+    display: block;
+  }
+
+  .offer-card__body {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding: var(--space-m);
   }
 
   .offer-card h3 {
@@ -32,6 +91,11 @@ const { offers } = Astro.props;
   }
 
   .offer-card p {
-    margin: 0;
+    margin: 0 0 var(--space-s);
+  }
+
+  .offer-card .btn {
+    align-self: flex-start;
+    margin-top: auto;
   }
 </style>

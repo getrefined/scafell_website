@@ -1,0 +1,193 @@
+---
+/**
+ * Booking bar: a white card straddling the bottom edge of the hero with arrival,
+ * departure, adults, children and a Check Availability button.
+ *
+ * The booking provider is still to be confirmed, so submitting shows a placeholder
+ * confirmation instead of navigating. `bookingSearchUrl()` in src/config/site.ts is
+ * the single swap point once a provider is chosen.
+ */
+import { site } from '../config/site';
+
+const adults = [1, 2, 3, 4, 5, 6];
+const children = [0, 1, 2, 3, 4];
+---
+
+<div class="book-wrap">
+  <div class="container">
+    <div class="book-card">
+      <!-- novalidate: a date typed below its min would otherwise be caught by native
+           validation, which reports via a browser tooltip instead of the status line. -->
+      <form id="book-form" class="book-form" novalidate data-phone={site.phone}>
+        <div>
+          <label for="book-arrive">Arrive</label>
+          <input id="book-arrive" name="arrive" type="date" />
+        </div>
+        <div>
+          <label for="book-depart">Depart</label>
+          <input id="book-depart" name="depart" type="date" />
+        </div>
+        <div>
+          <label for="book-adults">Adults</label>
+          <select id="book-adults" name="adults">
+            {adults.map((n) => <option value={n}>{n}</option>)}
+          </select>
+        </div>
+        <div>
+          <label for="book-children">Children</label>
+          <select id="book-children" name="children">
+            {children.map((n) => <option value={n}>{n}</option>)}
+          </select>
+        </div>
+        <div>
+          <button class="btn btn--book book-submit" type="submit">Check Availability</button>
+        </div>
+      </form>
+      <p id="book-status" class="book-status" role="status" hidden></p>
+    </div>
+  </div>
+</div>
+
+<style>
+  .book-wrap {
+    position: relative;
+    z-index: 5;
+    margin-top: -56px;
+  }
+
+  .book-card {
+    background: var(--c-white);
+    border-radius: var(--radius);
+    box-shadow: 0 10px 30px rgba(45, 53, 64, 0.15);
+    padding: 1.5rem 1.75rem;
+  }
+
+  .book-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr 0.7fr 0.7fr auto;
+    gap: 1.25rem;
+    align-items: end;
+  }
+
+  .book-form label {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--c-fell);
+    margin-bottom: 0.5rem;
+  }
+
+  .book-form input,
+  .book-form select {
+    width: 100%;
+    box-sizing: border-box;
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    color: var(--c-lake);
+    background: var(--c-white);
+    border: 1px solid rgba(45, 53, 64, 0.2);
+    border-radius: var(--radius);
+    padding: 0.75rem 0.875rem;
+  }
+
+  .book-submit {
+    display: block;
+    width: 100%;
+    padding-block: 0.85em;
+  }
+
+  .book-status {
+    margin: var(--space-s) 0 0;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: var(--c-lake);
+  }
+
+  @media (max-width: 70rem) {
+    .book-form {
+      grid-template-columns: repeat(4, 1fr);
+    }
+    .book-form > :last-child {
+      grid-column: 1 / -1;
+    }
+  }
+
+  @media (max-width: 51rem) {
+    .book-wrap {
+      margin-top: var(--space-m);
+    }
+    .book-form {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.875rem;
+    }
+  }
+</style>
+
+<script>
+  import { bookingSearchUrl } from '../config/site';
+
+  const form = document.getElementById('book-form') as HTMLFormElement | null;
+  const arrive = document.getElementById('book-arrive') as HTMLInputElement | null;
+  const depart = document.getElementById('book-depart') as HTMLInputElement | null;
+  const status = document.getElementById('book-status') as HTMLParagraphElement | null;
+
+  const today = () => new Date().toISOString().slice(0, 10);
+  const longDate = (v: string) =>
+    new Date(v + 'T00:00:00').toLocaleDateString('en-GB', { day: 'numeric', month: 'long' });
+  const plural = (n: number, word: string, pluralWord = word + 's') =>
+    `${n} ${n === 1 ? word : pluralWord}`;
+
+  if (form && arrive && depart && status) {
+    // No arrivals in the past, and no departure before the arrival.
+    const syncMins = () => {
+      arrive.min = today();
+      depart.min = arrive.value || today();
+    };
+    arrive.addEventListener('focus', syncMins);
+    depart.addEventListener('focus', syncMins);
+    arrive.addEventListener('change', () => {
+      syncMins();
+      if (depart.value && depart.value <= arrive.value) depart.value = '';
+    });
+
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      status.hidden = false;
+
+      const details = {
+        arrive: arrive.value,
+        depart: depart.value,
+        adults: Number((document.getElementById('book-adults') as HTMLSelectElement).value),
+        children: Number((document.getElementById('book-children') as HTMLSelectElement).value),
+      };
+
+      if (!details.arrive || !details.depart) {
+        status.textContent = 'Please choose your arrival and departure dates.';
+        return;
+      }
+
+      const nights = Math.round(
+        (new Date(details.depart).getTime() - new Date(details.arrive).getTime()) / 86400000,
+      );
+      if (nights < 1) {
+        status.textContent = 'Your departure date needs to be after your arrival date.';
+        return;
+      }
+
+      const url = bookingSearchUrl(details);
+      if (url) {
+        window.location.href = url;
+        return;
+      }
+
+      let guests = plural(details.adults, 'adult');
+      if (details.children > 0) guests += ' · ' + plural(details.children, 'child', 'children');
+
+      status.textContent =
+        `${plural(nights, 'night')}, ${longDate(details.arrive)}–${longDate(details.depart)}, ${guests}` +
+        ` — online booking is being connected. Please call ${form.dataset.phone} or use our enquiry form.`;
+    });
+  }
+</script>

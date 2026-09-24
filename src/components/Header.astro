@@ -7,15 +7,14 @@ interface Props {
 
 const { transparent = true } = Astro.props;
 
+/* Client amends (July 2026): no Home or Contact in the top nav, "Private Events" reads "Events". */
 const links = [
-  { href: withBase('/'), label: 'Home' },
   { href: withBase('/rooms/'), label: 'Rooms' },
   { href: withBase('/restaurant/'), label: 'Restaurant' },
-  { href: withBase('/private-events/'), label: 'Private Events' },
+  { href: withBase('/private-events/'), label: 'Events' },
   { href: withBase('/offers/'), label: 'Offers' },
   { href: withBase('/explore/'), label: 'Explore' },
   { href: withBase('/gallery/'), label: 'Gallery' },
-  { href: withBase('/contact/'), label: 'Contact' },
 ];
 
 /* Astro.url.pathname includes the base prefix, matching withBase() output. */
@@ -40,7 +39,7 @@ const current = Astro.url.pathname;
         }
       </ul>
     </nav>
-    <a class="btn site-header__book" href={bookingHref}>Book Now</a>
+    <a class="btn btn--book site-header__book" href={bookingHref}>Book Now</a>
     <button
       class="site-header__toggle"
       type="button"
@@ -64,13 +63,22 @@ const current = Astro.url.pathname;
     background: transparent;
     transition:
       background 0.35s var(--ease-out),
-      padding 0.35s var(--ease-out);
+      padding 0.35s var(--ease-out),
+      box-shadow 0.35s var(--ease-out);
   }
 
   .site-header--solid,
-  .site-header.is-scrolled,
   .site-header.is-open {
     background: var(--c-lake);
+  }
+
+  /* Floating header: condenses and frosts once the page scrolls. */
+  .site-header.is-scrolled {
+    padding-block: 0.4rem;
+    background: rgba(45, 53, 64, 0.94);
+    -webkit-backdrop-filter: saturate(140%) blur(10px);
+    backdrop-filter: saturate(140%) blur(10px);
+    box-shadow: 0 6px 24px rgba(20, 26, 32, 0.28);
   }
 
   .site-header__inner {
@@ -82,6 +90,11 @@ const current = Astro.url.pathname;
   .site-header__brand img {
     width: 110px;
     height: auto;
+    transition: width 0.35s var(--ease-out);
+  }
+
+  .site-header.is-scrolled .site-header__brand img {
+    width: 64px;
   }
 
   .site-header__nav {
@@ -164,6 +177,13 @@ const current = Astro.url.pathname;
       background: var(--c-white);
     }
   }
+
+  @media (prefers-reduced-motion: reduce) {
+    .site-header,
+    .site-header__brand img {
+      transition: none;
+    }
+  }
 </style>
 
 <script>
@@ -171,7 +191,7 @@ const current = Astro.url.pathname;
   const toggle = document.querySelector('.site-header__toggle');
 
   if (header) {
-    const onScroll = () => header.classList.toggle('is-scrolled', window.scrollY > 40);
+    const onScroll = () => header.classList.toggle('is-scrolled', window.scrollY > 60);
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
   }

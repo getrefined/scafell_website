@@ -32,3 +32,21 @@ export const site = {
 
 /** BOOK NOW target — Contact page until a booking engine is chosen. */
 export const bookingHref: string = site.bookingUrl || withBase('/contact/');
+
+/** Shape of a booking-bar search (see BookingBar.astro). */
+export interface BookingSearch {
+  arrive: string; // YYYY-MM-DD
+  depart: string; // YYYY-MM-DD
+  adults: number;
+  children: number;
+}
+
+/**
+ * SWAP POINT: the booking provider is still to be confirmed. Once chosen, build and
+ * return their search URL here and the booking bar will send guests straight to it.
+ * Returning null keeps the placeholder confirmation message.
+ */
+export function bookingSearchUrl(_details: BookingSearch): string | null {
+  return null;
+  // e.g. return `https://book.example.com/search?checkin=${_details.arrive}&checkout=${_details.depart}&adults=${_details.adults}&children=${_details.children}`;
+}

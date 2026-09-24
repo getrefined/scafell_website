@@ -17,7 +17,7 @@ const heroSlice = sliceOf(slices, 'hero_slice');
   <Hero
     image={heroContact}
     alt="The valley around The Scafell Hotel"
-    title={heroSlice?.primary?.heading || "We'd Love to Hear From You"}
+    title={heroSlice?.primary?.heading || 'Here to help'}
     short
   />
 
@@ -25,27 +25,29 @@ const heroSlice = sliceOf(slices, 'hero_slice');
     <section class="section container">
       <div class="contact-grid">
         <div class="reveal">
-          <p>
+          <p class="contact-lead">
             Whether you're planning a relaxing getaway, booking a table, organising an event or
             simply have a question, our team is here to help.
           </p>
 
-          <h2>Contact Information</h2>
-          <address>
-            {site.address.line1}<br />
-            {site.address.line2}<br />
-            {site.address.village}<br />
-            {site.address.town}<br />
-            {site.address.postcode}<br />
-            {site.address.country}
-          </address>
-          <p>
-            <strong>Phone:</strong>
-            <a href={site.phoneHref}>{site.phone}</a><br />
-            <strong>Email:</strong>
-            <a href={`mailto:${site.email}`}>{site.email}</a>
-          </p>
-          <p><a class="btn" href={site.directionsUrl}>Get directions</a></p>
+          <div class="contact-card">
+            <h2>Contact Information</h2>
+            <address>
+              {site.address.line1}<br />
+              {site.address.line2}<br />
+              {site.address.village}<br />
+              {site.address.town}<br />
+              {site.address.postcode}<br />
+              {site.address.country}
+            </address>
+            <p>
+              <strong>Phone:</strong>
+              <a href={site.phoneHref}>{site.phone}</a><br />
+              <strong>Email:</strong>
+              <a href={`mailto:${site.email}`}>{site.email}</a>
+            </p>
+            <a class="btn" href={site.directionsUrl}>Get directions</a>
+          </div>
         </div>
 
         <div class="reveal">
@@ -55,9 +57,7 @@ const heroSlice = sliceOf(slices, 'hero_slice');
             possible.
           </p>
           <EnquiryForm />
-          <p style="margin-top: var(--space-s);">
-            We look forward to welcoming you to The Scafell Hotel.
-          </p>
+          <p class="contact-signoff">We look forward to welcoming you to The Scafell Hotel.</p>
         </div>
       </div>
     </section>
@@ -74,6 +74,32 @@ const heroSlice = sliceOf(slices, 'hero_slice');
     .contact-grid {
       grid-template-columns: 1fr 1.2fr;
     }
+  }
+
+  .contact-lead {
+    font-size: 1.2rem;
+    line-height: 1.6;
+    margin: 0 0 var(--space-m);
+  }
+
+  .contact-card {
+    background: var(--c-white);
+    border-radius: var(--radius);
+    box-shadow: 0 10px 30px rgba(45, 53, 64, 0.08);
+    padding: var(--space-m);
+  }
+
+  .contact-card h2 {
+    font-size: 1.5rem;
+    margin-bottom: var(--space-s);
+  }
+
+  .contact-card p {
+    margin: 0 0 var(--space-m);
+  }
+
+  .contact-signoff {
+    margin-top: var(--space-s);
   }
 
   address {

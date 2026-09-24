@@ -2,51 +2,52 @@
 import { site, bookingHref, withBase } from '../config/site';
 
 const year = new Date().getFullYear();
+
+/* Social links are shown even before the client supplies URLs (amend: "Add Facebook and
+   Instagram page links on the footer"); '#' is the placeholder until site.ts is updated. */
+const facebook = site.facebookUrl || '#';
+const instagram = site.instagramUrl || '#';
 ---
 
 <footer class="site-footer">
   <div class="container site-footer__grid">
     <div>
-      <img src={withBase('/logo-white.svg')} alt={site.name} width="160" height="64" />
+      <img
+        class="site-footer__icon"
+        src={withBase('/icon-fell-green.svg')}
+        alt={site.name}
+        width="84"
+        height="84"
+      />
+      <p class="site-footer__social">
+        <a href={facebook}>Facebook</a>
+        <a href={instagram}>Instagram</a>
+      </p>
+    </div>
+    <nav aria-label="Footer">
+      <ul>
+        <li><a href={withBase('/rooms/')}>Rooms</a></li>
+        <li><a href={withBase('/restaurant/')}>Restaurant</a></li>
+        <li><a href={withBase('/private-events/')}>Events</a></li>
+        <li><a href={withBase('/offers/')}>Offers</a></li>
+        <li><a href={withBase('/explore/')}>Explore</a></li>
+        <li><a href={withBase('/gallery/')}>Gallery</a></li>
+        <li><a href={withBase('/history/')}>History</a></li>
+        <li><a href={withBase('/contact/')}>Contact</a></li>
+      </ul>
+    </nav>
+    <div>
       <p class="site-footer__address">
         {site.address.line1}<br />
         {site.address.line2}<br />
         {site.address.village}, {site.address.town}<br />
         {site.address.postcode}, {site.address.country}
       </p>
-    </div>
-    <nav aria-label="Footer">
-      <ul>
-        <li><a href={withBase('/')}>Homepage</a></li>
-        <li><a href={withBase('/rooms/')}>Rooms</a></li>
-        <li><a href={withBase('/restaurant/')}>Restaurant</a></li>
-        <li><a href={withBase('/private-events/')}>Private Events</a></li>
-        <li><a href={withBase('/offers/')}>Offers</a></li>
-        <li><a href={withBase('/explore/')}>Explore</a></li>
-        <li><a href={withBase('/gallery/')}>Gallery</a></li>
-        <li><a href={withBase('/contact/')}>Contact</a></li>
-      </ul>
-    </nav>
-    <div>
-      <p>
+      <p class="site-footer__contact">
         <a href={site.phoneHref}>{site.phone}</a><br />
         <a href={`mailto:${site.email}`}>{site.email}</a>
       </p>
-      {
-        site.facebookUrl && (
-          <p>
-            <a href={site.facebookUrl}>Facebook</a>
-          </p>
-        )
-      }
-      {
-        site.instagramUrl && (
-          <p>
-            <a href={site.instagramUrl}>Instagram</a>
-          </p>
-        )
-      }
-      <a class="btn btn--ghost" href={bookingHref}>Book Now</a>
+      <a class="btn btn--book" href={bookingHref}>Book Now</a>
     </div>
   </div>
   <p class="site-footer__legal container">
@@ -60,31 +61,54 @@ const year = new Date().getFullYear();
     background: var(--c-lake);
     color: var(--c-white);
     padding-block: var(--space-l) var(--space-m);
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
     margin-top: auto;
   }
 
-  .site-footer a {
+  .site-footer a:not(.btn) {
     color: var(--c-sky);
     text-decoration: none;
   }
-  .site-footer a:hover {
+  .site-footer a:not(.btn):hover {
     text-decoration: underline;
   }
 
   .site-footer__grid {
     display: grid;
     gap: var(--space-m);
-    grid-template-columns: repeat(auto-fit, minmax(min(14rem, 100%), 1fr));
+    grid-template-columns: repeat(3, 1fr);
   }
 
-  .site-footer__grid img {
-    width: 140px;
+  @media (max-width: 40rem) {
+    .site-footer__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .site-footer__icon {
+    width: 84px;
     height: auto;
+  }
+
+  .site-footer__social {
+    margin: 1.25rem 0 0;
+    font-size: 0.9rem;
+    display: grid;
+    gap: 0.5rem;
+    justify-items: start;
   }
 
   .site-footer__address {
     font-size: 0.9rem;
     opacity: 0.85;
+    margin-bottom: var(--space-s);
+  }
+
+  .site-footer__contact {
+    font-size: 1.1rem;
+    font-weight: 700;
+    line-height: 1.6;
+    margin-bottom: var(--space-s);
   }
 
   .site-footer nav ul {

@@ -23,7 +23,7 @@ const heroSlice = sliceOf(slices, 'hero_slice');
 const introSlice = sliceOf(slices, 'rich_text_slice');
 
 const introHtml =
-  '<p>Browse our gallery and experience the charm of The Scafell Hotel before you arrive.</p><p>Explore our comfortable bedrooms, inviting restaurant, beautiful surroundings and unforgettable Lake District views.</p><p>Every image tells part of the story of your next escape.</p>';
+  '<p>Browse our gallery and experience the charm of The Scafell Hotel before you arrive.</p><p>Explore our comfortable bedrooms, inviting restaurant, beautiful surroundings and unforgettable Lake District views. Every image tells part of the story of your next escape.</p>';
 
 const photos = [
   { image: img1, alt: 'The Lake District landscape' },
@@ -34,7 +34,7 @@ const photos = [
   { image: img6, alt: 'A cosy double room' },
   { image: img7, alt: 'Mountain scenery' },
   { image: img8, alt: 'Seasonal dishes' },
-  { image: img9, alt: 'Countryside views' },
+  { image: img9, alt: 'A bedroom at The Scafell Hotel' },
   { image: img10, alt: 'The Borrowdale valley' },
   { image: img11, alt: 'Lake District scenery' },
   { image: img12, alt: 'An event setting' },
@@ -48,7 +48,7 @@ const photos = [
   <Hero
     image={heroGallery}
     alt="Views of The Scafell Hotel and its surroundings"
-    title={heroSlice?.primary?.heading || 'Discover The Scafell Hotel'}
+    title={heroSlice?.primary?.heading || 'Discover'}
     short
   />
 

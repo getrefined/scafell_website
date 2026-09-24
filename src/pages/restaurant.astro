@@ -1,11 +1,18 @@
 ---
+import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import Hero from '../components/Hero.astro';
 import FeatureSection from '../components/FeatureSection.astro';
+import featureDining from '../assets/images/v2b-feature-dining.jpg';
+import TableReservation from '../components/TableReservation.astro';
 import { site } from '../config/site';
 import { getPageSlices, sliceOf } from '../lib/prismicio';
-import heroRestaurant from '../assets/images/hero-restaurant.jpg';
-import diningDetail from '../assets/images/dining-detail.jpg';
+import heroRestaurant from '../assets/images/v2b-hero-restaurant.jpg';
+import dining1 from '../assets/images/v2b-dining-1.jpg';
+import dining2 from '../assets/images/v2b-dining-2.jpg';
+import dining3 from '../assets/images/v2b-dining-3.jpg';
+import dining4 from '../assets/images/v2b-dining-4.jpg';
+import dining5 from '../assets/images/v2b-dining-5.jpg';
 
 const slices = await getPageSlices('restaurant');
 const heroSlice = sliceOf(slices, 'hero_slice');
@@ -13,6 +20,14 @@ const featureSlice = sliceOf(slices, 'feature_slice');
 
 const diningHtml =
   '<p>Dining at The Scafell Hotel is an experience to savour. Our restaurant celebrates the finest local ingredients, carefully crafted into seasonal dishes inspired by the surrounding landscape.</p><p>Start your day with a hearty Lake District breakfast before heading out to explore, then return in the evening to enjoy expertly prepared cuisine alongside a carefully selected range of wines, local ales and spirits.</p>';
+
+const photos = [
+  { src: dining1, alt: 'Signature dish at The Scafell Hotel restaurant', large: true },
+  { src: dining2, alt: 'Starter served in the restaurant' },
+  { src: dining3, alt: 'Drinks being poured at the bar' },
+  { src: dining4, alt: 'Dessert close-up' },
+  { src: dining5, alt: 'The dining room in service' },
+];
 ---
 
 <Base
@@ -26,19 +41,61 @@ const diningHtml =
     short
   />
 
+  <TableReservation />
+
   <main>
     <FeatureSection
       slice={featureSlice}
-      eyebrow="Dining"
+      heading="Dining Worth Staying For"
       body={diningHtml}
-      image={diningDetail}
-      imageAlt="Seasonal dishes at The Scafell Hotel"
+      ctaLabel="Reserve a Table →"
+      ctaHref="/contact/"
+      image={featureDining}
+      imageAlt="Dining at The Scafell Hotel"
+      flip
     />
+
+    <section class="section container">
+      <div class="reveal">
+        <span class="eyebrow">From the Kitchen</span>
+        <h2>Fresh. Seasonal. Local.</h2>
+        <div class="photo-grid">
+          {
+            photos.map((photo) => (
+              <div class:list={{ 'photo-grid__large': photo.large }}>
+                <Image
+                  src={photo.src}
+                  alt={photo.alt}
+                  widths={[400, 800, 1200]}
+                  sizes={photo.large ? '(min-width: 72rem) 36rem, 50vw' : '(min-width: 72rem) 18rem, 50vw'}
+                />
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <section class="section container">
+      <div class="reveal prose">
+        <h2>Relax Beside the River</h2>
+        <p>
+          Whether you're meeting friends for a relaxed catch-up, enjoying pre-dinner drinks or
+          unwinding after a day exploring the fells, the Riverside Bar offers the perfect setting.
+        </p>
+        <p>
+          Overlooking the river, it's a welcoming space to enjoy a carefully selected range of
+          wines, local ales, premium spirits and expertly crafted drinks. Pair your favourite tipple
+          with a light bite, settle into comfortable surroundings and take in the peaceful
+          atmosphere, whatever the occasion.
+        </p>
+      </div>
+    </section>
 
     <section class="band band--green section">
       <div class="container reveal">
-        <h2>Fresh. Seasonal. Local.</h2>
-        <p>
+        <h2>Warm hospitality, exceptional flavours</h2>
+        <p class="band__copy">
           From relaxed lunches to memorable evening meals, our restaurant offers warm hospitality
           and exceptional flavours in a welcoming setting.
         </p>
@@ -52,13 +109,77 @@ const diningHtml =
       </div>
     </section>
 
-    <section class="section container" style="text-align: center;">
-      <div class="reveal">
+    <section class="band section">
+      <div class="container reveal">
         <h2>Reserve your table during your stay</h2>
         <p>
-          Call us on <a href={site.phoneHref}>{site.phone}</a> to book.
+          Call us on <a class="phone" href={site.phoneHref}>{site.phone}</a> to book.
         </p>
       </div>
     </section>
   </main>
 </Base>
+
+<style>
+  .prose {
+    max-width: 46rem;
+  }
+
+  .prose p:last-child {
+    margin-bottom: 0;
+  }
+
+  /* Photo showcase: one 2x2 hero shot beside a 2x2 block of supporting images */
+  .photo-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-auto-rows: 17.5rem;
+    gap: var(--space-s);
+    margin-top: var(--space-m);
+  }
+
+  .photo-grid > div {
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  .photo-grid__large {
+    grid-column: span 2;
+    grid-row: span 2;
+  }
+
+  .photo-grid img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: var(--radius);
+  }
+
+  @media (max-width: 51rem) {
+    .photo-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-auto-rows: 12rem;
+    }
+  }
+
+  @media (max-width: 30rem) {
+    .photo-grid {
+      grid-template-columns: 1fr;
+      grid-auto-rows: 14rem;
+    }
+    .photo-grid__large {
+      grid-column: auto;
+      grid-row: auto;
+    }
+  }
+
+  .band__copy {
+    max-width: 44rem;
+    margin-inline: auto;
+  }
+
+  .band .phone {
+    color: var(--c-white);
+    font-weight: 700;
+  }
+</style>

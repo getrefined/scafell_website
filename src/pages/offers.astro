@@ -1,34 +1,46 @@
 ---
 import Base from '../layouts/Base.astro';
 import Hero from '../components/Hero.astro';
-import RichTextSection from '../components/RichTextSection.astro';
 import OfferGrid from '../components/OfferGrid.astro';
-import CtaBanner from '../components/CtaBanner.astro';
-import { offers as fallbackOffers } from '../content/offers';
+import { bookingHref } from '../config/site';
+import { offers as fallbackOffers, type Offer } from '../content/offers';
 import { client, getPageSlices, sliceOf, slicesOf } from '../lib/prismicio';
-import heroOffers from '../assets/images/hero-offers.jpg';
+import * as prismic from '@prismicio/client';
+import heroOffers from '../assets/images/v2b-hero-offers.jpg';
 
 const slices = await getPageSlices('offers');
 const heroSlice = sliceOf(slices, 'hero_slice');
 const richSlices = slicesOf(slices, 'rich_text_slice');
-const ctaSlice = sliceOf(slices, 'cta_banner_slice');
 
 // Live offers from the Prismic repeatable type; fallback to hardcoded list.
-let offers = fallbackOffers;
+// Prismic offers without an image rotate through the local photography in OfferGrid.
+let offers: (Offer & { imageUrl?: string })[] = fallbackOffers;
 try {
   const docs = await client.getAllByType('offer' as any);
   if (docs.length > 0) {
-    offers = docs.map((d) => ({
-      name: (d.data as any).name ?? '',
-      description: (d.data as any).description ?? '',
-    }));
+    offers = docs.map((d) => {
+      const data = d.data as any;
+      return {
+        name: data.name ?? '',
+        description: data.description ?? '',
+        imageUrl: data.image?.url || undefined,
+        alt: data.image?.alt || undefined,
+      };
+    });
   }
 } catch {
   /* Prismic unreachable — fallback stands */
 }
 
+const fallbackIntroHtml =
+  "<p>Make your Lake District escape even more memorable with our latest special offers and seasonal packages. Whether you're planning a spontaneous weekend away, a walking holiday in the fells or a longer countryside retreat, our carefully curated offers provide the perfect opportunity to experience The Scafell Hotel for less.</p><p>Our latest promotions are updated regularly throughout the year. Check back often to discover:</p>";
+
+const richBody = richSlices[0]?.primary?.body;
 const introHtml =
-  "<p>Make your Lake District escape even more memorable with our latest special offers and seasonal packages. Whether you're planning a spontaneous weekend away, a walking holiday in the fells or a longer countryside retreat, our carefully curated offers provide the perfect opportunity to experience The Scafell Hotel for less.</p><p>From accommodation packages and dining experiences to seasonal breaks and exclusive savings, there's always a reason to return to the Lakes.</p>";
+  richBody && (prismic.asText(richBody) ?? '').trim()
+    ? prismic.asHTML(richBody)
+    : fallbackIntroHtml;
+
 ---
 
 <Base
@@ -37,43 +49,62 @@ const introHtml =
 >
   <Hero
     image={heroOffers}
-    alt="The Lake District scenery around The Scafell Hotel"
-    title={heroSlice?.primary?.heading || 'Exclusive Offers at The Scafell Hotel'}
+    alt="Walking boots on a Lake District trail"
+    title={heroSlice?.primary?.heading || 'Exclusive Offers'}
     short
   />
 
   <main>
-    <RichTextSection slice={richSlices[0]} body={introHtml} />
-
     <section class="section container">
-      <h2 class="reveal">Current Offers</h2>
-      <p class="reveal">
-        Our latest promotions are updated regularly throughout the year. Check back often to
-        discover:
-      </p>
+      <h2 class="reveal">Explore our range of offers</h2>
+      <div class="offers-intro reveal" set:html={introHtml} />
       <OfferGrid offers={offers} />
     </section>
 
     <section class="band section">
       <div class="container reveal">
         <h2>Why Book Direct?</h2>
-        <p style="max-width: 44rem; margin-inline: auto;">
+        <p class="band__copy">
           When you book directly with The Scafell Hotel, you'll enjoy access to our best available
           rates, exclusive offers and the confidence of booking with our team.
         </p>
+        <a class="btn btn--ghost" href={bookingHref}>Book your stay today</a>
       </div>
     </section>
 
     <section class="section container" style="text-align: center;">
       <div class="reveal">
         <h2>Plan Your Next Escape</h2>
-        <p style="max-width: 44rem; margin-inline: auto;">
+        <p class="plan-copy">
           Surrounded by some of the Lake District's most spectacular scenery, there's never been a
           better time to discover everything The Scafell Hotel has to offer.
         </p>
       </div>
     </section>
-
-    <CtaBanner heading={ctaSlice?.primary?.heading || 'Book your stay today'} />
   </main>
 </Base>
+
+<style>
+  .offers-intro {
+    max-width: 46rem;
+    margin-bottom: var(--space-m);
+  }
+
+  .offers-intro :global(p) {
+    margin: 0 0 var(--space-s);
+  }
+
+  .offers-intro :global(p:last-child) {
+    margin-bottom: 0;
+  }
+
+  .band__copy {
+    max-width: 44rem;
+    margin: 0 auto var(--space-s);
+  }
+
+  .plan-copy {
+    max-width: 44rem;
+    margin: 0 auto;
+  }
+</style>

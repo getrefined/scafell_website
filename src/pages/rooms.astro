@@ -1,25 +1,32 @@
 ---
+import * as prismic from '@prismicio/client';
 import Base from '../layouts/Base.astro';
 import Hero from '../components/Hero.astro';
-import RichTextSection from '../components/RichTextSection.astro';
-import ListSection from '../components/ListSection.astro';
-import CardGrid from '../components/CardGrid.astro';
+import BookingBar from '../components/BookingBar.astro';
+import RoomSection from '../components/RoomSection.astro';
 import CtaBanner from '../components/CtaBanner.astro';
 import { rooms } from '../content/rooms';
 import { getPageSlices, sliceOf } from '../lib/prismicio';
-import heroRooms from '../assets/images/hero-rooms.jpg';
+import heroRooms from '../assets/images/v2b-hero-rooms.jpg';
 
 const slices = await getPageSlices('rooms');
 const heroSlice = sliceOf(slices, 'hero_slice');
 const introSlice = sliceOf(slices, 'rich_text_slice');
 const listSlice = sliceOf(slices, 'list_slice');
-const cardsSlice = sliceOf(slices, 'card_grid_slice');
 const ctaSlice = sliceOf(slices, 'cta_banner_slice');
 
-const introHtml =
-  '<p>Our 23 individually designed bedrooms combine classic comfort with modern conveniences, creating the perfect sanctuary after a day spent exploring the fells, lakes and valleys of the Lake District.</p><p>Choose from cosy doubles, spacious superior rooms and family-friendly accommodation, each thoughtfully furnished to ensure a restful stay. Many rooms offer stunning views of the surrounding countryside, allowing you to wake up immersed in the natural beauty of the Lakes.</p>';
+/** Plain text from a Prismic Text or StructuredText field. */
+const text = (f: any): string => (typeof f === 'string' ? f : f ? (prismic.asText(f) ?? '') : '');
 
-const features = [
+const introFallback =
+  '<p>Our 23 individually designed bedrooms combine classic comfort with modern conveniences, creating the perfect sanctuary after a day spent exploring the fells, lakes and valleys of the Lake District. We have a limited number of dog friendly rooms and disabled rooms upon request.</p><p>Choose from cosy doubles, spacious superior rooms and family-friendly accommodation, each thoughtfully furnished to ensure a restful stay. Many rooms offer stunning views of the surrounding countryside, allowing you to wake up immersed in the natural beauty of the Lakes.</p>';
+
+const introHtml =
+  introSlice?.primary?.body && text(introSlice.primary.body).trim()
+    ? prismic.asHTML(introSlice.primary.body)
+    : introFallback;
+
+const featuresFallback = [
   'Comfortable beds with quality linens',
   'En-suite bathrooms',
   'Complimentary Wi-Fi',
@@ -28,32 +35,92 @@ const features = [
   'Beautiful countryside views in selected rooms',
 ];
 
-const roomCards = rooms.map((r) => ({
-  title: r.name,
-  description: r.description,
-  image: r.image,
-  alt: r.alt,
-}));
+const sliceFeatures: string[] =
+  listSlice?.primary?.items?.map((i: any) => text(i.item).trim()).filter(Boolean) ?? [];
+const features = sliceFeatures.length ? sliceFeatures : featuresFallback;
+const featuresHeading = text(listSlice?.primary?.heading).trim() || 'Room Features';
 ---
 
 <Base
   title="Rooms | The Scafell Hotel"
-  description="Our 23 individually designed bedrooms combine classic comfort with modern conveniences — cosy doubles, spacious superior rooms and family-friendly accommodation."
+  description="Our 23 individually designed bedrooms combine classic comfort with modern conveniences — cosy doubles, spacious superior rooms, family-friendly and self-catering accommodation."
 >
   <Hero
     image={heroRooms}
-    alt="Countryside views from The Scafell Hotel"
+    alt="A bedroom at The Scafell Hotel"
     title={heroSlice?.primary?.heading || 'Relax in Comfort'}
     short
   />
+  <BookingBar />
 
   <main>
-    <RichTextSection slice={introSlice} body={introHtml} />
-    <ListSection slice={listSlice} heading="Room Features" items={features} />
-    <RichTextSection
-      body="<p>Whether you're visiting for a weekend escape or an extended holiday, you'll find everything you need for a memorable stay.</p>"
-    />
-    <CardGrid slice={cardsSlice} cards={roomCards} columns={2} accent="gorse" />
+    <section class="intro container">
+      <h2 class="reveal">Our Elegant Rooms and Suites</h2>
+      <div class="intro__grid">
+        <div class="intro__copy prose reveal reveal-delay-1" set:html={introHtml} />
+        <div class="intro__card reveal reveal-delay-2">
+          <h3>{featuresHeading}</h3>
+          <ul>
+            {features.map((f) => <li>{f}</li>)}
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    {
+      rooms.map((room, i) => (
+        <RoomSection room={room} flip={i % 2 === 1} tone={i % 2 === 1 ? 'offwhite' : 'white'} />
+      ))
+    }
+
     <CtaBanner heading={ctaSlice?.primary?.heading || 'Find your perfect sanctuary'} />
   </main>
 </Base>
+
+<style>
+  .intro {
+    padding-block: var(--space-l);
+  }
+
+  .intro > h2 {
+    margin-bottom: var(--space-m);
+  }
+
+  .intro__grid {
+    display: grid;
+    gap: clamp(var(--space-m), 5vw, 3.5rem);
+    align-items: start;
+  }
+
+  @media (min-width: 50rem) {
+    .intro__grid {
+      grid-template-columns: 1.2fr 1fr;
+    }
+  }
+
+  .intro__copy :global(p) {
+    margin: 0 0 var(--space-s);
+  }
+
+  .intro__copy :global(p:last-child) {
+    margin-bottom: 0;
+  }
+
+  .intro__card {
+    background: var(--c-white);
+    border-radius: var(--radius);
+    box-shadow: 0 10px 30px rgba(45, 53, 64, 0.08);
+    padding: var(--space-m);
+  }
+
+  .intro__card h3 {
+    font-size: 1.5rem;
+  }
+
+  .intro__card ul {
+    margin: 0;
+    display: grid;
+    gap: 0.35rem;
+    font-size: 0.95rem;
+  }
+</style>

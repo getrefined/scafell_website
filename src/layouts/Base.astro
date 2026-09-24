@@ -6,7 +6,7 @@ import '@fontsource/manrope/700.css';
 import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import { site, withBase } from '../config/site';
+import { site, withBase, bookingHref } from '../config/site';
 
 interface Props {
   title: string;
@@ -56,6 +56,7 @@ const schema = {
     <Header transparent={transparentHeader} />
     <slot />
     <Footer />
+    <a class="btn btn--book float-book" href={bookingHref}>Book Now</a>
     <script>
       const els = document.querySelectorAll('.reveal');
       const io = new IntersectionObserver(

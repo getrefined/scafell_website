@@ -1,0 +1,213 @@
+---
+/**
+ * Table reservation card: a white card straddling the bottom edge of the restaurant
+ * hero with date, time, guests and a Reserve a Table button. Matches BookingBar.astro.
+ *
+ * The reservation system is still to be confirmed, so submitting shows a placeholder
+ * confirmation instead of navigating. `reservationUrl()` in the script below is the
+ * single swap point once a provider is chosen.
+ */
+import { site } from '../config/site';
+
+const lunch = ['12:00', '12:30', '13:00', '13:30', '14:00', '14:30'];
+const dinner = ['18:00', '18:30', '19:00', '19:30', '20:00', '20:30', '21:00'];
+const guests = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+
+/** "13:30" → "1:30" for the option labels (the value keeps the 24h form). */
+const label = (t: string) => {
+  const [h, m] = t.split(':');
+  const hour = Number(h);
+  return `${hour > 12 ? hour - 12 : hour}:${m}`;
+};
+---
+
+<div class="table-wrap">
+  <div class="container">
+    <div class="table-card">
+      <!-- novalidate: native validation would block the submit event and report via a
+           browser tooltip instead of the card's status line. -->
+      <form id="table-form" class="table-form" novalidate data-phone={site.phone}>
+        <div>
+          <label for="table-date">Date</label>
+          <input id="table-date" name="date" type="date" />
+        </div>
+        <div>
+          <label for="table-time">Time</label>
+          <select id="table-time" name="time">
+            <option value="">Select a time</option>
+            <optgroup label="Lunch">
+              {lunch.map((t) => <option value={t}>{label(t)}</option>)}
+            </optgroup>
+            <optgroup label="Dinner">
+              {dinner.map((t) => <option value={t}>{label(t)}</option>)}
+            </optgroup>
+          </select>
+        </div>
+        <div>
+          <label for="table-guests">Guests</label>
+          <select id="table-guests" name="guests">
+            {guests.map((n) => <option value={n} selected={n === 2}>{n}</option>)}
+          </select>
+        </div>
+        <div>
+          <button class="btn btn--book table-submit" type="submit">Reserve a Table</button>
+        </div>
+      </form>
+      <p id="table-status" class="table-status" role="status" hidden></p>
+    </div>
+  </div>
+</div>
+
+<style>
+  .table-wrap {
+    position: relative;
+    z-index: 5;
+    margin-top: -56px;
+  }
+
+  .table-card {
+    background: var(--c-white);
+    border-radius: var(--radius);
+    box-shadow: 0 10px 30px rgba(45, 53, 64, 0.15);
+    padding: 1.5rem 1.75rem;
+  }
+
+  .table-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr 0.7fr auto;
+    gap: 1.25rem;
+    align-items: end;
+  }
+
+  .table-form label {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--c-fell);
+    margin-bottom: 0.5rem;
+  }
+
+  .table-form input,
+  .table-form select {
+    width: 100%;
+    box-sizing: border-box;
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    color: var(--c-lake);
+    background: var(--c-white);
+    border: 1px solid rgba(45, 53, 64, 0.2);
+    border-radius: var(--radius);
+    padding: 0.75rem 0.875rem;
+  }
+
+  .table-submit {
+    display: block;
+    width: 100%;
+    padding-block: 0.85em;
+  }
+
+  .table-status {
+    margin: var(--space-s) 0 0;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: var(--c-lake);
+  }
+
+  @media (max-width: 70rem) {
+    .table-form {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .table-form > :last-child {
+      grid-column: 1 / -1;
+    }
+  }
+
+  @media (max-width: 51rem) {
+    .table-wrap {
+      margin-top: var(--space-m);
+    }
+    .table-form {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.875rem;
+    }
+  }
+</style>
+
+<script>
+  interface TableDetails {
+    date: string; // YYYY-MM-DD
+    time: string; // HH:MM, 24h
+    guests: number;
+  }
+
+  /**
+   * SWAP POINT: the reservation system is still to be confirmed. Once chosen, build and
+   * return their booking URL here. Returning null keeps the placeholder confirmation.
+   */
+  function reservationUrl(_details: TableDetails): string | null {
+    return null;
+    // e.g. return `https://reserve.example.com/book?date=${_details.date}&time=${_details.time}&covers=${_details.guests}`;
+  }
+
+  const form = document.getElementById('table-form') as HTMLFormElement | null;
+  const date = document.getElementById('table-date') as HTMLInputElement | null;
+  const time = document.getElementById('table-time') as HTMLSelectElement | null;
+  const guests = document.getElementById('table-guests') as HTMLSelectElement | null;
+  const status = document.getElementById('table-status') as HTMLParagraphElement | null;
+
+  const today = () => new Date().toISOString().slice(0, 10);
+  const longDate = (v: string) =>
+    new Date(v + 'T00:00:00').toLocaleDateString('en-GB', {
+      weekday: 'long',
+      day: 'numeric',
+      month: 'long',
+    });
+  const clockTime = (v: string) => {
+    const [h, m] = v.split(':');
+    const hour = Number(h);
+    return `${hour > 12 ? hour - 12 : hour}:${m}${hour < 12 ? 'am' : 'pm'}`;
+  };
+
+  if (form && date && time && guests && status) {
+    // No tables in the past.
+    date.addEventListener('focus', () => {
+      date.min = today();
+    });
+
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      status.hidden = false;
+
+      const details: TableDetails = {
+        date: date.value,
+        time: time.value,
+        guests: Number(guests.value),
+      };
+
+      if (!details.date) {
+        status.textContent = 'Please choose a date for your table.';
+        return;
+      }
+      if (details.date < today()) {
+        status.textContent = 'Please choose a date from today onwards.';
+        return;
+      }
+      if (!details.time) {
+        status.textContent = 'Please choose a time for your table.';
+        return;
+      }
+
+      const url = reservationUrl(details);
+      if (url) {
+        window.location.href = url;
+        return;
+      }
+
+      status.textContent =
+        `Table for ${details.guests}, ${longDate(details.date)} at ${clockTime(details.time)}` +
+        ` — online reservations are being connected. Please call ${form.dataset.phone} to confirm your table.`;
+    });
+  }
+</script>

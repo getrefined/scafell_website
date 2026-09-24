@@ -1,12 +1,15 @@
 ---
 import Base from '../layouts/Base.astro';
 import Hero from '../components/Hero.astro';
-import RichTextSection from '../components/RichTextSection.astro';
-import ListSection from '../components/ListSection.astro';
+import OccasionGrid from '../components/OccasionGrid.astro';
 import CtaBanner from '../components/CtaBanner.astro';
 import { withBase } from '../config/site';
 import { getPageSlices, sliceOf } from '../lib/prismicio';
-import heroEvents from '../assets/images/hero-events.jpg';
+import * as prismic from '@prismicio/client';
+import heroEvents from '../assets/images/v2b-hero-events.jpg';
+import event1 from '../assets/images/v2b-event-1.jpg';
+import event2 from '../assets/images/v2b-event-2.jpg';
+import event3 from '../assets/images/v2b-event-3.jpg';
 
 const slices = await getPageSlices('private_events');
 const heroSlice = sliceOf(slices, 'hero_slice');
@@ -14,15 +17,53 @@ const introSlice = sliceOf(slices, 'rich_text_slice');
 const listSlice = sliceOf(slices, 'list_slice');
 const ctaSlice = sliceOf(slices, 'cta_banner_slice');
 
-const introHtml =
-  "<p>From intimate family gatherings to milestone celebrations and corporate retreats, The Scafell Hotel provides a beautiful setting for memorable events.</p><p>Our experienced team will work closely with you to create a bespoke experience, whether you're planning a birthday celebration, anniversary, private dining event, business meeting or special occasion.</p>";
+/** Plain text from a Prismic Text or StructuredText field. */
+const text = (f: any): string => (typeof f === 'string' ? f : f ? (prismic.asText(f) ?? '') : '');
 
-const reasons = [
+const fallbackIntroHtml =
+  "<p>From intimate family gatherings to milestone celebrations and corporate retreats, The Scafell Hotel provides a beautiful setting for memorable events.</p><p>Our experienced team will work closely with you to create a bespoke experience, whether you're planning a birthday celebration, anniversary, private dining event, business meeting or special occasion.</p><p>Let us help bring your event to life.</p>";
+
+const introBody = introSlice?.primary?.body;
+const introHtml =
+  introBody && text(introBody).trim() ? prismic.asHTML(introBody) : fallbackIntroHtml;
+
+const fallbackReasons = [
   'Stunning Lake District location',
   'Flexible event spaces',
   'Bespoke catering options',
   'Comfortable accommodation for guests',
   'Dedicated event support',
+];
+
+const listPrimary = listSlice?.primary;
+const reasonsHeading =
+  (listPrimary ? text(listPrimary.heading).trim() : '') || 'Why Choose The Scafell Hotel?';
+const sliceReasons: string[] =
+  listPrimary?.items?.map((i: any) => text(i.item).trim()).filter(Boolean) ?? [];
+const reasons = sliceReasons.length ? sliceReasons : fallbackReasons;
+
+const occasions = [
+  {
+    title: 'Celebrations',
+    description:
+      'Birthdays, anniversaries and milestones marked with bespoke menus and a warm Lakeland welcome.',
+    image: event1,
+    alt: 'Celebration table setting at The Scafell Hotel',
+  },
+  {
+    title: 'Private Dining',
+    description:
+      'Intimate dinners in a private setting, with seasonal dishes crafted from the finest local ingredients.',
+    image: event2,
+    alt: 'Private dining room',
+  },
+  {
+    title: 'Corporate Retreats',
+    description:
+      'Meetings and away days with flexible spaces, accommodation for delegates and inspiring surroundings.',
+    image: event3,
+    alt: 'Meeting and retreat space',
+  },
 ];
 ---
 
@@ -33,14 +74,30 @@ const reasons = [
   <Hero
     image={heroEvents}
     alt="An event setting at The Scafell Hotel"
-    title={heroSlice?.primary?.heading || 'Celebrate in the Heart of the Lakes'}
+    title={heroSlice?.primary?.heading || 'Celebrate in the Lakes'}
     short
   />
 
   <main>
-    <RichTextSection slice={introSlice} body={introHtml} />
-    <ListSection slice={listSlice} heading="Why Choose The Scafell Hotel?" items={reasons} />
-    <RichTextSection body="<p>Let us help bring your event to life.</p>" />
+    <section class="section container">
+      <h2 class="reveal">Celebrating Special Moments</h2>
+      <div class="events-intro">
+        <div class="events-intro__copy reveal" set:html={introHtml} />
+        <aside class="events-intro__aside reveal reveal-delay-1">
+          <h2 class="events-intro__aside-heading">{reasonsHeading}</h2>
+          <ul class="events-intro__list">
+            {reasons.map((r) => <li>{r}</li>)}
+          </ul>
+        </aside>
+      </div>
+    </section>
+
+    <OccasionGrid
+      eyebrow="Occasions"
+      heading="A setting for every celebration"
+      occasions={occasions}
+    />
+
     <CtaBanner
       heading={ctaSlice?.primary?.heading || 'Contact our team to discuss your requirements'}
       buttonLabel="Get in touch"
@@ -48,3 +105,44 @@ const reasons = [
     />
   </main>
 </Base>
+
+<style>
+  .events-intro {
+    display: grid;
+    gap: clamp(var(--space-m), 5vw, 3.5rem);
+    align-items: start;
+  }
+
+  @media (min-width: 50rem) {
+    .events-intro {
+      grid-template-columns: 1.2fr 1fr;
+    }
+  }
+
+  .events-intro__copy :global(p) {
+    margin: 0 0 var(--space-s);
+  }
+
+  .events-intro__copy :global(p:last-child) {
+    margin-bottom: 0;
+  }
+
+  .events-intro__aside {
+    background: var(--c-white);
+    border-radius: var(--radius);
+    box-shadow: 0 10px 30px rgba(45, 53, 64, 0.08);
+    padding: var(--space-m);
+  }
+
+  .events-intro__aside-heading {
+    font-size: 1.5rem;
+    margin: 0 0 var(--space-s);
+  }
+
+  .events-intro__list {
+    margin: 0;
+    display: grid;
+    gap: 0.35rem;
+    font-size: 0.95rem;
+  }
+</style>
