@@ -1,0 +1,113 @@
+---
+import Base from '../layouts/Base.astro';
+import Hero from '../components/Hero.astro';
+import RichTextSection from '../components/RichTextSection.astro';
+import FeatureSection from '../components/FeatureSection.astro';
+import CtaBanner from '../components/CtaBanner.astro';
+import { getPageSlices, sliceOf, slicesOf } from '../lib/prismicio';
+import heroHistory from '../assets/images/history-hero.jpg';
+import hotel1950s from '../assets/images/history-hotel-1950s.jpg';
+import postcard from '../assets/images/history-postcard.jpg';
+import barnesWallis from '../assets/images/history-barnes-wallis.jpg';
+import dukeOfEdinburgh from '../assets/images/history-duke-of-edinburgh.jpg';
+
+const slices = await getPageSlices('history');
+const heroSlice = sliceOf(slices, 'hero_slice');
+const introSlice = sliceOf(slices, 'rich_text_slice');
+const features = slicesOf(slices, 'feature_slice');
+const ctaSlice = sliceOf(slices, 'cta_banner_slice');
+
+const introHtml =
+  '<p>The Scafell Hotel in Rosthwaite, Borrowdale, is a historic Lake District property that began as a private home in 1816–1817 before evolving into a renowned coaching inn and hotel.</p>';
+
+const originsHtml =
+  '<p><strong>Built in 1816–1817:</strong> the original structure was built as a private residence for the artist Mary Barker.</p>' +
+  '<p><strong>Early mountaineer:</strong> Mary Barker was one of the earliest recorded women to scale nearby Scafell Pike, climbing alongside Dorothy Wordsworth, sister of the poet William Wordsworth.</p>' +
+  '<p><strong>Transition to an inn:</strong> over the 19th century, as tourism grew in the Borrowdale valley, the property transitioned from a private residence into a coaching inn and hotel.</p>';
+
+const barnesWallisHtml =
+  '<p>The famous engineer and inventor of the “bouncing bomb” used in Operation Chastise during World War II was a regular visitor. He and his wife frequented the hotel and surrounding fells for over 52 years.</p>' +
+  '<p>Whenever he came, he insisted on a large table in his room on which he could carry on with his engineering design work when the weather was inclement. To commemorate this, we made a suite in the hotel named after him, completed in 2008 along with further refurbishments of other rooms. To celebrate, the hotel had a fly-by of a GR4 Tornado from 617 Squadron, based at RAF Leuchars, using this as part of their training programme.</p>';
+
+const climbersHtml =
+  '<p>The hotel has been a magnet for renowned climbers and walkers such as Sir Chris Bonington, Joe Brown, Alfred Wainwright and Eric Robson.</p>' +
+  '<p>It hosted the 60th birthday party for television presenter and keen climber and hill walker Ian McNaught-Davis, up Napes Needle on Great Gable, and saw BBC Radio Stockholm correspondent Roger Wallis fill the hotel with reporters from all over the globe.</p>';
+
+const royalHtml =
+  '<p>The hotel has also had royal visitors, including the Prince of Wales stopping off at the Riverside Bar on one of his trips to the area, and the Duke of Edinburgh presenting prizes in 2001 to runners who had participated in the gruelling Borrowdale Fell Race, which has a long association with the hostelry.</p>';
+
+const jessopHtml =
+  '<p>In 1971, Miles Jessop bought the hotel from the Badrock family, who had managed it for 47 years. Jessop ran the landmark hotel for over 50 years, adding features like the popular Riverside Bar.</p>';
+
+const todayHtml =
+  '<p>The property sits in around five acres of grounds with 23 en suite bedrooms, a characterful 60-cover restaurant, lounges, and a self-contained Riverside Bar with seating for 50 which is popular with locals and hotel residents. There is also ample parking on site.</p>' +
+  '<p>The hotel has a backdrop of Lakeland fells including Great Gable, Dale Head, High Spy, Scafell Pike and Great End, a particular attraction to seasoned walkers. Its close proximity to the banks of the River Derwent appeals equally to those seeking a gentler stroll.</p>';
+---
+
+<Base
+  title="Our History | The Scafell Hotel"
+  description="From Mary Barker's 1816 private residence to a renowned Borrowdale coaching inn: the story of The Scafell Hotel, its famous visitors and its royal guests."
+>
+  <Hero
+    image={heroHistory}
+    alt="Aerial view of The Scafell Hotel and Rosthwaite in the Borrowdale valley"
+    title={heroSlice?.primary?.heading || 'Our History'}
+    subtitle={heroSlice?.primary?.subheading || 'Two centuries of hospitality in Borrowdale'}
+    short
+  />
+
+  <main>
+    <RichTextSection slice={introSlice} body={introHtml} />
+
+    <FeatureSection
+      slice={features[0]}
+      eyebrow="Early origins and the 19th century"
+      heading="From private home to coaching inn"
+      body={originsHtml}
+      image={postcard}
+      imageAlt="Vintage postcard of The Scafell Hotel, Rosthwaite"
+    />
+
+    <FeatureSection
+      slice={features[1]}
+      eyebrow="Famous visitors"
+      heading="Sir Barnes Wallis"
+      body={barnesWallisHtml}
+      image={barnesWallis}
+      imageAlt="Sir Barnes Wallis and his wife on a rocky Lakeland summit"
+      flip
+    />
+
+    <FeatureSection
+      slice={features[2]}
+      eyebrow="Climbers and walkers"
+      heading="A magnet for mountaineers"
+      body={climbersHtml}
+      image={hotel1950s}
+      imageAlt="The Scafell Hotel in the mid-20th century, with vintage cars on the drive"
+    />
+
+    <FeatureSection
+      slice={features[3]}
+      eyebrow="Royal visitors"
+      heading="Princes at the Riverside Bar"
+      body={royalHtml}
+      image={dukeOfEdinburgh}
+      imageAlt="The Duke of Edinburgh presenting prizes at the Borrowdale Fell Race in 2001"
+      flip
+    />
+
+    <FeatureSection
+      slice={features[4]}
+      eyebrow="The Jessop era"
+      heading="Fifty years of stewardship"
+      body={jessopHtml}
+      image={heroHistory}
+      imageAlt="Aerial view of The Scafell Hotel grounds and the Borrowdale fells"
+    />
+
+    <RichTextSection body={todayHtml} />
+
+    <CtaBanner heading={ctaSlice?.primary?.heading || 'Become part of the story'} />
+  </main>
+</Base>
