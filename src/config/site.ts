@@ -12,7 +12,7 @@ export const site = {
   formEndpoint: 'https://scafell-prismic-webhook.digital-f33.workers.dev/contact',
   menusUrl: '', // link/PDF for VIEW MENUS; '' → hide the button
   facebookUrl: 'https://www.facebook.com/profile.php?id=61593896566650',
-  instagramUrl: 'https://www.instagram.com/thescafellhotel?stkn=NXpxZTA3bDUwYnNj&utm_source=qr',
+  instagramUrl: 'https://www.instagram.com/thescafellhotel?stkn=NXpxZTA3bDUwYnNj&utm_source=website',
   // ────────────────────────────────────────────────────────────────
 
   phone: '01768 785184',
