@@ -11,12 +11,12 @@ export const site = {
   bookingUrl: '', // external booking engine URL; '' → BOOK NOW links to the Contact page
   formEndpoint: 'https://scafell-prismic-webhook.digital-f33.workers.dev/contact',
   menusUrl: '', // link/PDF for VIEW MENUS; '' → hide the button
-  facebookUrl: '', // '' → hide link
-  instagramUrl: '', // '' → hide link
+  facebookUrl: 'https://www.facebook.com/profile.php?id=61593896566650',
+  instagramUrl: 'https://www.instagram.com/thescafellhotel?stkn=NXpxZTA3bDUwYnNj&utm_source=qr',
   // ────────────────────────────────────────────────────────────────
 
-  phone: '+44 17687 77208',
-  phoneHref: 'tel:+441768777208',
+  phone: '01768 785184',
+  phoneHref: 'tel:+441768785184',
   email: 'info@scafellhotel.co.uk',
   address: {
     line1: 'The Scafell Hotel',
